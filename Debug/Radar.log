@@ -1,0 +1,4 @@
+﻿  Application.cpp
+c:\users\thogrim\documents\visual studio 2013\projects\game\radar\application.cpp(16): warning C4244: "argument" : konwersja z "float" do "unsigned int", możliwa utrata danych
+c:\users\thogrim\documents\visual studio 2013\projects\game\radar\application.cpp(73): warning C4244: "argument" : konwersja z "int" do "float", możliwa utrata danych
+  Radar.vcxproj -> C:\Users\Thogrim\documents\visual studio 2013\Projects\Game\Debug\Radar.exe
