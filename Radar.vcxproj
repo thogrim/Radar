@@ -72,9 +72,18 @@
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="States\MenuState.cpp" />
+    <ClCompile Include="States\State.cpp" />
+    <ClCompile Include="StateManager.cpp" />
+    <ClCompile Include="States\TitleState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
+    <ClInclude Include="ChangeableContainer.h" />
+    <ClInclude Include="States\MenuState.h" />
+    <ClInclude Include="States\State.h" />
+    <ClInclude Include="StateManager.h" />
+    <ClInclude Include="States\TitleState.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

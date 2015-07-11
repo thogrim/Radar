@@ -7,6 +7,8 @@ Application::Application(int width, int height, const std::string& title, float 
 	fps_(fps),
 	debugMode_(debugMode),
 	window_(sf::VideoMode(width_,height_,32), title_),
+	stateManager_(),
+	//DEBUG
 	text_(),
 	currentFps_(fps_),
 	updatesCounter_(0),
@@ -22,6 +24,7 @@ Application::Application(int width, int height, const std::string& title, float 
 	}
 	text_.setFont(debugFont_);
 	text_.setCharacterSize(20);
+	//stateManager_.push(new MenuState());
 }
 
 
@@ -34,6 +37,9 @@ Application::~Application()
 }
 
 void Application::processEvents(){
+/*
+TODO zmiana rozmiaru okna lub zablokowanie?
+*/
 	sf::Event ev;
 	while (window_.pollEvent(ev)){
 		switch (ev.type){
@@ -43,19 +49,17 @@ void Application::processEvents(){
 		case sf::Event::KeyPressed:
 			if (ev.key.code == sf::Keyboard::Escape)
 				window_.close();
-			break;/*
-				  TODO zmiana rozmiaru okna lub zablokowanie?
-				  case sf::Event::Resized:
-				  m_view.setSize(sf::Vector2f(ev.size.width, ev.size.height));
-				  m_view.setCenter(m_player.getPosition().x, m_player.getPosition().y);
-				  m_window.setView(m_view);
-				  break;*/
+			else
+				stateManager_.processEvents(ev);
+			break;
+		default:
+			stateManager_.processEvents(ev);
 		}
 	}
 }
 
 void Application::update(const sf::Time& dt){
-
+	stateManager_.update(dt);
 }
 
 void Application::updateDebug(){
@@ -72,14 +76,11 @@ void Application::renderDebug(){
 	text_.setString(oss.str());
 	text_.setPosition(0,height_ - 50);
 	window_.draw(text_);
-	//str = "UPS: " + std::to_string(currentUps_);
-	//text_.setString(str);
-	//text_.setPosition(0, 20);
-	//window_.draw(text_);
 }
 
 void Application::render(){
 	window_.clear(sf::Color::Black);
+	window_.draw(stateManager_.getDrawable());
 	if (debugMode_)
 		renderDebug();
 	window_.display();

@@ -5,6 +5,7 @@
 #include <iomanip>
 #include <string>
 #include <sstream>
+#include "StateManager.h"
 
 class Application
 {
@@ -16,8 +17,9 @@ private:
 	float fps_;
 
 	sf::RenderWindow window_;
+	StateManager stateManager_;
 
-	//DEBUG INFO
+	//DEBUG INFO - put this into struct?
 	bool debugMode_;
 	sf::Font debugFont_;
 	sf::Text text_;
@@ -27,18 +29,19 @@ private:
 	int frameCounter_;
 	sf::Time timePassed_;
 
-public:
-	//CONSTRUCTORS & DESTRUCTOR
-	Application(int width, int height, const std::string& title, float fps, bool debugMode);
-	Application();
-	~Application();
-
 	//PRIVATE METHODS
 	void processEvents();
 	void update(const sf::Time& dt);
 	void updateDebug();
 	void renderDebug();
+	//void renderScene(Scene scene);
 	void render();
+
+public:
+	//CONSTRUCTORS & DESTRUCTOR
+	Application(int width, int height, const std::string& title, float fps, bool debugMode);
+	Application();
+	~Application();
 
 	//PUBLIC METHODS
 	void run();
