@@ -7,7 +7,7 @@ Application::Application(int width, int height, const std::string& title, float 
 	fps_(fps),
 	debugMode_(debugMode),
 	window_(sf::VideoMode(width_,height_,32), title_),
-	stateManager_(),
+	stateManager_(window_,debugMode_),
 	//DEBUG
 	text_(),
 	currentFps_(fps_),
@@ -24,6 +24,7 @@ Application::Application(int width, int height, const std::string& title, float 
 	}
 	text_.setFont(debugFont_);
 	text_.setCharacterSize(20);
+	text_.setPosition(0, height_ - 50);
 	//stateManager_.push(new MenuState());
 }
 
@@ -32,8 +33,7 @@ Application::Application() : Application(800, 600, "SFML Game", 60, true) {
 }
 
 
-Application::~Application()
-{
+Application::~Application(){
 }
 
 void Application::processEvents(){
@@ -49,17 +49,25 @@ TODO zmiana rozmiaru okna lub zablokowanie?
 		case sf::Event::KeyPressed:
 			if (ev.key.code == sf::Keyboard::Escape)
 				window_.close();
+			else if (ev.key.code == sf::Keyboard::Tab)
+				debugMode_ = true;
 			else
 				stateManager_.processEvents(ev);
 			break;
 		default:
 			stateManager_.processEvents(ev);
+		case sf::Event::KeyReleased:
+			if (ev.key.code == sf::Keyboard::Tab)
+				debugMode_ = false;
 		}
 	}
 }
 
 void Application::update(const sf::Time& dt){
-	stateManager_.update(dt);
+	if (!stateManager_.empty())
+		stateManager_.update(dt);
+	else
+		window_.close();
 }
 
 void Application::updateDebug(){
@@ -68,19 +76,19 @@ void Application::updateDebug(){
 	frameCounter_ = 0;
 	updatesCounter_ = 0;
 	timePassed_ = sf::Time::Zero;
-}
-
-void Application::renderDebug(){
 	std::ostringstream oss;
 	oss << "FPS: " << std::setprecision(3) << currentFps_ << "\nUPS: " << std::setprecision(4) << currentUps_;
 	text_.setString(oss.str());
-	text_.setPosition(0,height_ - 50);
+}
+
+void Application::renderDebug(){
 	window_.draw(text_);
+	stateManager_.renderDebug();
 }
 
 void Application::render(){
 	window_.clear(sf::Color::Black);
-	window_.draw(stateManager_.getDrawable());
+	stateManager_.render();
 	if (debugMode_)
 		renderDebug();
 	window_.display();
@@ -99,7 +107,6 @@ void Application::run(){
 		++frameCounter_;
 		while (accumulator > TimePerUpdate){
 			accumulator -= TimePerUpdate;
-			//frameTime += TimePerUpdate;
 			processEvents();
 			update(TimePerUpdate);
 			++updatesCounter_;

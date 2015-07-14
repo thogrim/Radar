@@ -1,42 +1,58 @@
 #include "StateManager.h"
 
-
-StateManager::StateManager():
+StateManager::StateManager(sf::RenderWindow& window, bool& debug) :
 	stateStack_(),
-	pendingChange_(Action::NONE,nullptr){
-	stateStack_.push(std::unique_ptr<State>(new TitleState(this)));
-	stateStack_.top()->init();
+	window_(window),
+	debugMode_(debug),
+	//font_(),
+	text_(){
+	if (!font_.loadFromFile("res/fonts/calibri.ttf")){
+		std::cout << "StateManager could not load his font from file\n";
+	}
+	text_.setFont(font_);
+	text_.setCharacterSize(20);
+	text_.setPosition(0, window_.getSize().y - 75);
+	stateStack_.push_back(std::unique_ptr<State>(new TitleState(this,window_,debugMode_)));
+	stateStack_.back()->init();
 }
 
-
-StateManager::~StateManager(){
+void StateManager::pop(){
+	stateStack_.pop_back();
 }
 
-void StateManager::pendChange(Action action, State* state){
-	pendingChange_.action_ = action;
-	pendingChange_.state_ = state;
+void StateManager::push(State* state){
+	stateStack_.push_back(std::unique_ptr<State>(state));
+	stateStack_.back()->init();
+}
+
+void StateManager::change(State* state){
+	stateStack_.pop_back();
+	stateStack_.push_back(std::unique_ptr<State>(state));
+	stateStack_.back()->init();
 }
 
 void StateManager::processEvents(const sf::Event& ev){
-	stateStack_.top()->processEvents(ev);
+	stateStack_.back()->processEvents(ev);
+}
+
+void StateManager::updateDebug(){
+	text_.setString("Current state stack size: " + std::to_string(stateStack_.size()));
+	stateStack_.back()->updateDebug();
 }
 
 void StateManager::update(const sf::Time& dt){
-	if (changeRequested()){
-		switch (pendingChange_.action_){
-		case Action::SWITCH:
-			stateStack_.pop();
-			stateStack_.push(std::unique_ptr<State>(pendingChange_.state_));
-			stateStack_.top()->init();
-			break;
-		}
-		resetChange();
-	}
-	else{
-		stateStack_.top()->update(dt);
-	}
+	stateStack_.back()->update(dt);
+	if (debugMode_)
+		updateDebug();
 }
 
-sf::Text StateManager::getDrawable() const{
-	return stateStack_.top()->getText();
+void StateManager::renderDebug() const {
+	window_.draw(text_);
+	stateStack_.back()->renderDebug();
+}
+
+void StateManager::render() const{
+	//drawing state on top of stack
+	stateStack_.back()->render();
+	//later it might need to draw multiple states
 }

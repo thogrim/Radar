@@ -1,23 +1,22 @@
 #include "State.h"
 
-
-State::State(ChangeableContainer<State>* stateManager)
+State::State(ChangeableContainer<State>* stateManager, sf::RenderWindow& window, bool& debug)
 	:stateManager_(stateManager),
-	text_()
-	{
-	//if (!font_.loadFromFile("res/fonts/calibri.ttf")){
-	//	//ERROR IN LOADING FONT
-	//	//TODO: HANDLE IT!
-	//	std::cout << "error in loading debug font\n";
-	//}
-	//text_.setFont(font_);
-	//text_.setCharacterSize(20);
+	//active_(true),
+	text_(),
+	textures_(),
+	fonts_(),
+	context_(window,debug){
 }
 
+State::State(ChangeableContainer<State>* stateManager, const Context& context)
+	:stateManager_(stateManager),
+	//active_(true),
+	text_(),
+	textures_(),
+	fonts_(),
+	context_(context){
+}
 
 State::~State(){
-}
-
-sf::Text State::getText() const {
-	return text_;
 }

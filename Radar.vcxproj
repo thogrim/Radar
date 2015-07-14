@@ -72,6 +72,7 @@
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="ResourceHolder.inl" />
     <ClCompile Include="States\MenuState.cpp" />
     <ClCompile Include="States\State.cpp" />
     <ClCompile Include="StateManager.cpp" />
@@ -80,6 +81,7 @@
   <ItemGroup>
     <ClInclude Include="Application.h" />
     <ClInclude Include="ChangeableContainer.h" />
+    <ClInclude Include="ResourceHolder.h" />
     <ClInclude Include="States\MenuState.h" />
     <ClInclude Include="States\State.h" />
     <ClInclude Include="StateManager.h" />

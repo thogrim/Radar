@@ -1,7 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include <stack>
+#include <vector>
 #include <memory>
 #include "States/State.h"
 #include "States/TitleState.h"
@@ -12,40 +12,32 @@ class StateManager: public ChangeableContainer<State>
 {
 private:
 	//STATE STACK
-	std::stack<std::unique_ptr<State>> stateStack_;
+	std::vector<std::unique_ptr<State>> stateStack_;
 
-	//PENDING CHANGE TO STACK
-	struct PendingChange{
-		Action action_;
-		State* state_;
-		PendingChange(Action action, State* state)
-			:action_(action),
-			state_(state){
-		}
-	} pendingChange_;
+	//CONTEXT INFO
+	sf::RenderWindow& window_;
+	bool& debugMode_;
 
-	bool changeRequested(){
-		return pendingChange_.action_ != Action::NONE;
-	}
+	//DEBUG TEXT
+	sf::Font font_;
+	sf::Text text_;
 
-	void resetChange(){
-		pendingChange_.action_ = Action::NONE;
-		pendingChange_.state_ = nullptr;
-	}
+	void updateDebug();
 public:
-	//CONSTRUCTORS AND DESTRUCTOR
-	StateManager();
-	virtual ~StateManager();
+	StateManager(sf::RenderWindow& window, bool& debug);
+	virtual ~StateManager(){}
 
-	//State* peek(){
-	//	if (stateStack_.empty())
-	//		return nullptr;
-	//	return stateStack_.top().get();
-	//}
+	bool empty(){
+		return stateStack_.empty();
+	}
 
-	void pendChange(Action action, State* state);
+	void pop();
+	void push(State* state);
+	void change(State* state);
+
 	void processEvents(const sf::Event& ev);
 	void update(const sf::Time& dt);
-	sf::Text getDrawable() const;
+	void renderDebug() const;
+	void render() const;
 };
 
