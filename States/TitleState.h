@@ -13,7 +13,7 @@ private:
 	sf::Sprite bgImage_;
 public:
 	TitleState(ChangeableContainer<State>* stateManager, sf::RenderWindow& window, bool& debug);
-	TitleState(ChangeableContainer<State>* stateManager, const Context& context);
+	TitleState(const Context& context);
 	~TitleState();
 
 	void init();

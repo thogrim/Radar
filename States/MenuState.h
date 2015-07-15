@@ -11,7 +11,7 @@ private:
 	//sf::View view_;
 public:
 	MenuState(ChangeableContainer<State>* stateManager, sf::RenderWindow& window, bool& debug);
-	MenuState(ChangeableContainer<State>* stateManager, const Context& context);
+	MenuState(const Context& context);
 	~MenuState();
 
 	void init();

@@ -11,15 +11,15 @@ public:
 	struct Context{
 		sf::RenderWindow& window_;
 		bool& debugMode_;
-		Context(sf::RenderWindow& window, bool& debug)
+		ChangeableContainer<State>* stateManager_;
+		Context(sf::RenderWindow& window, bool& debug, ChangeableContainer<State>* stateManager)
 			:window_(window),
-			debugMode_(debug){
+			debugMode_(debug),
+			stateManager_(stateManager){
 		}
 	};
 protected:
-	//POINTER TO STATE MANAGER
-	ChangeableContainer<State>* stateManager_;
-
+	Context context_;
 	//bool active_;
 
 	//DRAWABLE STUFF
@@ -28,11 +28,10 @@ protected:
 	sf::Text text_;
 	ResourceHolder<sf::Texture> textures_;
 	ResourceHolder<sf::Font> fonts_;
-	Context context_;
 public:
 
 	State(ChangeableContainer<State>* stateManager, sf::RenderWindow& window, bool& debug);
-	State(ChangeableContainer<State>* stateManager, const Context& context);
+	State(const Context& context);
 	~State();
 
 	//void pause(){

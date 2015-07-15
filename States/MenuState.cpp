@@ -7,8 +7,8 @@ MenuState::MenuState(ChangeableContainer<State>* stateManager, sf::RenderWindow&
 {
 }
 
-MenuState::MenuState(ChangeableContainer<State>* stateManager, const Context& context)
-	:State(stateManager, context),
+MenuState::MenuState(const Context& context)
+	:State(context),
 	bgImage_()
 	//view_(sf::FloatRect(0,0,800,600))
 {
@@ -38,7 +38,7 @@ void MenuState::processEvents(const sf::Event& ev){
 	switch (ev.type){
 	case sf::Event::KeyPressed:
 		if (ev.key.code == sf::Keyboard::Return)
-			stateManager_->change(new TitleState(stateManager_, context_));
+			context_.stateManager_->change(new TitleState(context_));
 	}
 }
 

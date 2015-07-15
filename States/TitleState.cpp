@@ -8,8 +8,8 @@ TitleState::TitleState(ChangeableContainer<State>* stateManager, sf::RenderWindo
 	bgImage_(){
 }
 
-TitleState::TitleState(ChangeableContainer<State>* stateManager, const Context& context)
-	:State(stateManager,context),
+TitleState::TitleState(const Context& context)
+	:State(context),
 	titleDuration_(sf::seconds(1.0f)),
 	timer_(sf::Time::Zero),
 	bgImage_(){
@@ -38,7 +38,7 @@ void TitleState::processEvents(const sf::Event& ev){
 	switch (ev.type){
 	case sf::Event::KeyPressed:
 		if (ev.key.code == sf::Keyboard::Return)
-			stateManager_->change(new MenuState(stateManager_,context_));
+			context_.stateManager_->change(new MenuState(context_));
 	}
 }
 
@@ -49,7 +49,7 @@ void TitleState::updateDebug(){
 void TitleState::update(const sf::Time& dt){
 	timer_ += dt;
 	if (timer_>titleDuration_)
-		stateManager_->change(new MenuState(stateManager_, context_));
+		context_.stateManager_->change(new MenuState(context_));
 }
 
 void TitleState::renderDebug() const{
