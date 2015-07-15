@@ -6,7 +6,8 @@ State::State(ChangeableContainer<State>* stateManager, sf::RenderWindow& window,
 	text_(),
 	textures_(),
 	fonts_(),
-	context_(window,debug,stateManager){
+	context_(window,debug,stateManager),
+	root_(){
 }
 
 State::State(const Context& context)
@@ -15,7 +16,8 @@ State::State(const Context& context)
 	text_(),
 	textures_(),
 	fonts_(),
-	context_(context){
+	context_(context),
+	root_(){
 }
 
 State::~State(){
