@@ -1,17 +1,11 @@
 #include "MenuState.h"
 
 MenuState::MenuState(ChangeableContainer<State>* stateManager, sf::RenderWindow& window, bool& debug)
-	:State(stateManager,window,debug),
-	bgImage_()
-	//view_(sf::FloatRect(0,0,800,600))
-{
+	:State(stateManager,window,debug){
 }
 
 MenuState::MenuState(const Context& context)
-	:State(context),
-	bgImage_()
-	//view_(sf::FloatRect(0,0,800,600))
-{
+	:State(context){
 }
 
 MenuState::~MenuState(){
@@ -33,10 +27,10 @@ void MenuState::init(){
 	text_.setCharacterSize(20);
 	text_.setPosition(100, 100);
 	text_.setString("Menu! Yay!");
-	bgImage_.setTexture(textures_.get("menuImage"));
-	bgImage_.setPosition(100, 100);
+	SpriteNode* bg = new SpriteNode(textures_.get("menuImage"));
+	background_ = std::unique_ptr<SpriteNode>(std::move(bg));
 	//testing scene
-	root_.setTexture(textures_.get("root"));
+	/*root_.setTexture(textures_.get("root"));
 	root_.setPosition(600, 400);
 	std::unique_ptr<SceneNode> child1(new SceneNode());
 	child1->setTexture(textures_.get("child1"));
@@ -45,7 +39,7 @@ void MenuState::init(){
 	std::unique_ptr<SceneNode> child2(new SceneNode());
 	child2->setTexture(textures_.get("child2"));
 	child2->setPosition(-100, -100);
-	root_.attachChild(std::move(child2));
+	root_.attachChild(std::move(child2));*/
 	//view_.setViewport(sf::FloatRect(0.25f,0.25f,0.5f,0.5f));
 }
 
@@ -55,14 +49,14 @@ void MenuState::processEvents(const sf::Event& ev){
 		if (ev.key.code == sf::Keyboard::Return)
 			context_.stateManager_->change(new TitleState(context_));
 		//for scene testing
-		if (ev.key.code == sf::Keyboard::Up)
+		/*if (ev.key.code == sf::Keyboard::Up)
 			root_.move(0, -10);
 		if (ev.key.code == sf::Keyboard::Down)
 			root_.move(0, 10);
 		if (ev.key.code == sf::Keyboard::Left)
 			root_.move(-10, 0);
 		if (ev.key.code == sf::Keyboard::Right)
-			root_.move(10, 0);
+			root_.move(10, 0);*/
 	}
 } 
 
@@ -81,7 +75,6 @@ void MenuState::renderDebug() const{
 void MenuState::render() const{
 	//sf::View defaultView = target.getDefaultView();
 	//target.setView(view_);
-	context_.window_.draw(bgImage_);
-	context_.window_.draw(root_);
+	context_.window_.draw(*background_);
 	//target.setView(defaultView);
 }

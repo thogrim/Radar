@@ -12,23 +12,15 @@ private:
 	SceneNode* parent_;
 	std::vector<ScenePtr> children_;
 
-	//for test purposes
-	sf::Sprite sprite_;
-
+	virtual void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const=0;
 public:
 	SceneNode();
 	~SceneNode();
 	
 	void attachChild(ScenePtr child);
 	ScenePtr detachChild(const SceneNode& child);
-	virtual void update(const sf::Time& dt);
+	virtual void update(const sf::Time& dt)=0;
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const; //virtual?
-	//virtual void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
 	sf::Transform getWorldTransform();
 	sf::Vector2f getWorldPosition();
-
-	//test
-	void setTexture(const sf::Texture& texture){
-		sprite_.setTexture(texture);
-	}
 };

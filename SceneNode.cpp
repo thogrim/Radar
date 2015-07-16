@@ -2,8 +2,7 @@
 
 SceneNode::SceneNode()
 	:parent_(nullptr),
-	children_(),
-	sprite_(){
+	children_(){
 }
 
 SceneNode::~SceneNode(){
@@ -30,14 +29,10 @@ void SceneNode::update(const sf::Time& dt){
 
 void SceneNode::draw(sf::RenderTarget& target, sf::RenderStates states) const{
 	states.transform *= getTransform();
-	target.draw(sprite_,states);
+	drawCurrent(target, states);
 	for (const ScenePtr& ch : children_)
 		ch->draw(target, states);
 }
-
-//void SceneNode::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const{
-//
-//}
 
 sf::Transform SceneNode::getWorldTransform(){
 	sf::Transform worldTransform = sf::Transform::Identity;

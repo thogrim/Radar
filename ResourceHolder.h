@@ -44,6 +44,3 @@ const Resource& ResourceHolder<Resource>::get(const std::string& key) const{
 	assert(found != resourceHolder_.end());
 	return *found->second;
 }
-
-//#include "ResourceHolder.inl"
-

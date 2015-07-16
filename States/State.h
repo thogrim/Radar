@@ -4,7 +4,7 @@
 #include <iostream>
 #include "../ChangeableContainer.h"
 #include "../ResourceHolder.h"
-#include "../SceneNode.h"
+#include "../SpriteNode.h"
 
 class State{
 public:
@@ -29,7 +29,8 @@ protected:
 	sf::Text text_;
 	ResourceHolder<sf::Texture> textures_;
 	ResourceHolder<sf::Font> fonts_;
-	SceneNode root_;
+	std::unique_ptr<SpriteNode> background_;
+
 public:
 
 	State(ChangeableContainer<State>* stateManager, sf::RenderWindow& window, bool& debug);
