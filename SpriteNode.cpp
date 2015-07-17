@@ -22,3 +22,7 @@ void SpriteNode::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) 
 void SpriteNode::update(const sf::Time& dt){
 
 }
+
+void SpriteNode::setTexture(const sf::Texture& texture){
+	sprite_.setTexture(texture);
+}

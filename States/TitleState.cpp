@@ -1,7 +1,7 @@
 #include "TitleState.h"
 
-TitleState::TitleState(ChangeableContainer<State>* stateManager, sf::RenderWindow& window, bool& debug)
-	:State(stateManager,window,debug),
+TitleState::TitleState(ChangeableContainer<State>* stateManager, sf::RenderWindow& window)
+	:State(stateManager,window),
 	titleDuration_(sf::seconds(1.0f)),
 	timer_(sf::Time::Zero){
 }
@@ -29,8 +29,7 @@ void TitleState::init(){
 	text_.setPosition(100, 100);
 	text_.setString("Title! Yay!");
 	//loading background image
-	SpriteNode* bg = new SpriteNode(textures_.get("titleImage"));
-	background_ = std::unique_ptr<SpriteNode>(std::move(bg));
+	background_.setTexture(textures_.get("titleImage"));
 }
 
 void TitleState::processEvents(const sf::Event& ev){
@@ -56,5 +55,5 @@ void TitleState::renderDebug() const{
 }
 
 void TitleState::render() const{
-	context_.window_.draw(*background_);
+	context_.window_.draw(background_);
 }

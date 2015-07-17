@@ -7,7 +7,7 @@ Application::Application(int width, int height, const std::string& title, float 
 	fps_(fps),
 	debugMode_(debugMode),
 	window_(sf::VideoMode(width_,height_,32), title_),
-	stateManager_(window_,debugMode_),
+	stateManager_(window_),
 	//DEBUG
 	text_(),
 	currentFps_(fps_),

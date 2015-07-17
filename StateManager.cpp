@@ -1,9 +1,8 @@
 #include "StateManager.h"
 
-StateManager::StateManager(sf::RenderWindow& window, bool& debug) :
+StateManager::StateManager(sf::RenderWindow& window) :
 	stateStack_(),
 	window_(window),
-	debugMode_(debug),
 	//font_(),
 	text_(){
 	if (!font_.loadFromFile("res/fonts/calibri.ttf")){
@@ -12,7 +11,7 @@ StateManager::StateManager(sf::RenderWindow& window, bool& debug) :
 	text_.setFont(font_);
 	text_.setCharacterSize(20);
 	text_.setPosition(0, window_.getSize().y - 75);
-	stateStack_.push_back(std::unique_ptr<State>(new TitleState(this,window_,debugMode_)));
+	stateStack_.push_back(std::unique_ptr<State>(new TitleState(this,window_/*,debugMode_*/)));
 	stateStack_.back()->init();
 }
 
@@ -41,9 +40,8 @@ void StateManager::updateDebug(){
 }
 
 void StateManager::update(const sf::Time& dt){
+	updateDebug();
 	stateStack_.back()->update(dt);
-	if (debugMode_)
-		updateDebug();
 }
 
 void StateManager::renderDebug() const {

@@ -12,5 +12,6 @@ public:
 	~SpriteNode();
 
 	virtual void update(const sf::Time& dt);
+	void setTexture(const sf::Texture& texture);
 };
 

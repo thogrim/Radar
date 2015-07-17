@@ -1,7 +1,7 @@
 #include "MenuState.h"
 
-MenuState::MenuState(ChangeableContainer<State>* stateManager, sf::RenderWindow& window, bool& debug)
-	:State(stateManager,window,debug){
+MenuState::MenuState(ChangeableContainer<State>* stateManager, sf::RenderWindow& window)
+	:State(stateManager,window){
 }
 
 MenuState::MenuState(const Context& context)
@@ -27,8 +27,7 @@ void MenuState::init(){
 	text_.setCharacterSize(20);
 	text_.setPosition(100, 100);
 	text_.setString("Menu! Yay!");
-	SpriteNode* bg = new SpriteNode(textures_.get("menuImage"));
-	background_ = std::unique_ptr<SpriteNode>(std::move(bg));
+	background_.setTexture(textures_.get("menuImage"));
 	//testing scene
 	/*root_.setTexture(textures_.get("root"));
 	root_.setPosition(600, 400);
@@ -75,6 +74,6 @@ void MenuState::renderDebug() const{
 void MenuState::render() const{
 	//sf::View defaultView = target.getDefaultView();
 	//target.setView(view_);
-	context_.window_.draw(*background_);
+	context_.window_.draw(background_);
 	//target.setView(defaultView);
 }

@@ -4,12 +4,11 @@
 #include "TitleState.h"
 #include "../ChangeableContainer.h"
 
-class MenuState : public State
-{
+class MenuState : public State{
 private:
 	
 public:
-	MenuState(ChangeableContainer<State>* stateManager, sf::RenderWindow& window, bool& debug);
+	MenuState(ChangeableContainer<State>* stateManager, sf::RenderWindow& window);
 	MenuState(const Context& context);
 	~MenuState();
 

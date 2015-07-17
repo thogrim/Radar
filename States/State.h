@@ -11,11 +11,9 @@ public:
 	//CONTEXT
 	struct Context{
 		sf::RenderWindow& window_;
-		bool& debugMode_;
 		ChangeableContainer<State>* stateManager_;
-		Context(sf::RenderWindow& window, bool& debug, ChangeableContainer<State>* stateManager)
+		Context(sf::RenderWindow& window, ChangeableContainer<State>* stateManager)
 			:window_(window),
-			debugMode_(debug),
 			stateManager_(stateManager){
 		}
 	};
@@ -29,11 +27,11 @@ protected:
 	sf::Text text_;
 	ResourceHolder<sf::Texture> textures_;
 	ResourceHolder<sf::Font> fonts_;
-	std::unique_ptr<SpriteNode> background_;
+	SpriteNode background_;
 
 public:
 
-	State(ChangeableContainer<State>* stateManager, sf::RenderWindow& window, bool& debug);
+	State(ChangeableContainer<State>* stateManager, sf::RenderWindow& window/*, bool& debug*/);
 	State(const Context& context);
 	~State();
 

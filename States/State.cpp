@@ -1,12 +1,12 @@
 #include "State.h"
 
-State::State(ChangeableContainer<State>* stateManager, sf::RenderWindow& window, bool& debug)
+State::State(ChangeableContainer<State>* stateManager, sf::RenderWindow& window)
 	:
 	//active_(true),
 	text_(),
 	textures_(),
 	fonts_(),
-	context_(window,debug,stateManager),
+	context_(window,stateManager),
 	background_(){
 }
 

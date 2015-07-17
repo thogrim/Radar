@@ -10,7 +10,7 @@ private:
 	const sf::Time titleDuration_;
 	sf::Time timer_;
 public:
-	TitleState(ChangeableContainer<State>* stateManager, sf::RenderWindow& window, bool& debug);
+	TitleState(ChangeableContainer<State>* stateManager, sf::RenderWindow& window);
 	TitleState(const Context& context);
 	~TitleState();
 

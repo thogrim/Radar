@@ -14,9 +14,7 @@ private:
 	//STATE STACK
 	std::vector<std::unique_ptr<State>> stateStack_;
 
-	//CONTEXT INFO
 	sf::RenderWindow& window_;
-	bool& debugMode_;
 
 	//DEBUG TEXT
 	sf::Font font_;
@@ -24,7 +22,7 @@ private:
 
 	void updateDebug();
 public:
-	StateManager(sf::RenderWindow& window, bool& debug);
+	StateManager(sf::RenderWindow& window);
 	virtual ~StateManager(){}
 
 	bool empty(){
