@@ -2,17 +2,16 @@
 
 TitleState::TitleState(ChangeableContainer<State>* stateManager, sf::RenderWindow& window)
 	:State(stateManager,window),
-	titleDuration_(sf::seconds(1.0f)),
+	titleDuration_(sf::seconds(0.5f)),
 	timer_(sf::Time::Zero){
 }
 
 TitleState::TitleState(const Context& context)
-	:State(context),
-	titleDuration_(sf::seconds(1.0f)),
-	timer_(sf::Time::Zero){
+	:TitleState(context.stateManager_, context.window_){
 }
 
 TitleState::~TitleState(){
+	std::cout << "Title state destroyed\n";
 }
 
 void TitleState::init(){

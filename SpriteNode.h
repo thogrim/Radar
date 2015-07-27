@@ -3,9 +3,9 @@
 #include "SceneNode.h"
 
 class SpriteNode:public SceneNode{
-private:
+protected:
 	sf::Sprite sprite_;
-	virtual void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
+	void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
 public:
 	SpriteNode(const sf::Texture& texture);
 	SpriteNode();

@@ -11,7 +11,7 @@ StateManager::StateManager(sf::RenderWindow& window) :
 	text_.setFont(font_);
 	text_.setCharacterSize(20);
 	text_.setPosition(0, window_.getSize().y - 75);
-	stateStack_.push_back(std::unique_ptr<State>(new TitleState(this,window_/*,debugMode_*/)));
+	stateStack_.push_back(std::unique_ptr<State>(new TitleState(this,window_)));
 	stateStack_.back()->init();
 }
 

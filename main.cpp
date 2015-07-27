@@ -4,7 +4,7 @@ int main()
 {
 	Application app;
 	app.run();
-	system("pause");
+	//system("pause");
 	return 0;
 	//sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
 	//window.setFramerateLimit(60);

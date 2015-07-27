@@ -15,7 +15,7 @@ private:
 	virtual void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const=0;
 public:
 	SceneNode();
-	~SceneNode();
+	virtual ~SceneNode();
 	
 	void attachChild(ScenePtr child);
 	ScenePtr detachChild(const SceneNode& child);

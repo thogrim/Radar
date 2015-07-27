@@ -19,7 +19,7 @@ private:
 	sf::RenderWindow window_;
 	StateManager stateManager_;
 
-	//DEBUG INFO - put this into struct?
+	//DEBUG INFO - probably should refactor this
 	bool debugMode_;
 	sf::Font debugFont_;
 	sf::Text text_;
@@ -28,11 +28,15 @@ private:
 	int updatesCounter_;
 	int frameCounter_;
 	sf::Time timePassed_;
+	sf::CircleShape circle_;
+	float circleSpeed_;
+	const sf::Time timePerDebugUpdate_;
+	sf::Text mouse_;
 
 	//PRIVATE METHODS
 	void processEvents();
 	void update(const sf::Time& dt);
-	void updateDebug();
+	void updateDebug(const sf::Time& dt);
 	void renderDebug();
 	//void renderScene(Scene scene);
 	void render();
