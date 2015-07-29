@@ -3,12 +3,12 @@
 #include "State.h"
 #include "TitleState.h"
 #include "../ChangeableContainer.h"
-#include "../GUI/Button.h"
+#include "../GUI/Label.h"
 #include "../Entities/Entity.h"
 
 class MenuState : public State{
-//private:
-	//std::vector<GUI::Button> buttons_;
+private:
+	GUI::Label label_;
 public:
 	MenuState(ChangeableContainer<State>* stateManager, sf::RenderWindow& window);
 	MenuState(const Context& context);

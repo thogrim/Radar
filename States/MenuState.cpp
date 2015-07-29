@@ -1,8 +1,8 @@
 #include "MenuState.h"
 
 MenuState::MenuState(ChangeableContainer<State>* stateManager, sf::RenderWindow& window)
-	:State(stateManager,window)/*,
-	buttons_()*/{
+	:State(stateManager,window),
+	label_(){
 }
 
 MenuState::MenuState(const Context& context)
@@ -21,8 +21,10 @@ void MenuState::init(){
 		//textures_.load("child1", "res/img/child1.png");
 		//textures_.load("child2", "res/img/child2.png");
 		textures_.load("button","res/img/button.png");
-		textures_.load("plane","res/img/plane.png");
-		textures_.load("planebutton", "res/img/planebutton.png");
+		//textures_.load("plane","res/img/plane.png");
+		//textures_.load("planebutton", "res/img/planebutton.png");
+		textures_.load("label2", "res/img/label2.png");
+		textures_.load("checkbox", "res/img/checkbox.png");
 	}
 	catch (std::runtime_error& e){
 		std::cout << e.what() << std::endl;
@@ -33,10 +35,43 @@ void MenuState::init(){
 	text_.setPosition(0, context_.window_.getSize().y-100);
 	background_.setTexture(textures_.get("menuImage"));
 	background_.setPosition(100, 100);
-	//testing button & entity
-	createButton(textures_.get("button"), 300, 300,
+	//testing label
+	label_.create(textures_.get("label2"), 200, 50);
+	label_.createButton(textures_.get("button"),50,50,
 		[this](){
 		context_.stateManager_->change(new TitleState(context_));
+	});
+	label_.createButton(textures_.get("button"), 50, 100,
+		[](){
+		std::cout << "action performed\n";
+	});
+	label_.createCheckbox(textures_.get("checkbox"),50,150,
+		[](){
+			std::cout << "checkbox toggled\n";
+		},
+			[](){
+			std::cout << "checkbox untoggled\n";
+		});
+	label_.createCheckbox(textures_.get("checkbox"), 100, 150,
+		[](){
+		std::cout << "checkbox toggled\n";
+	},
+		[](){
+		std::cout << "checkbox untoggled\n";
+	});
+	label_.createCheckbox(textures_.get("checkbox"), 50, 200,
+		[](){
+		std::cout << "checkbox toggled\n";
+	},
+		[](){
+		std::cout << "checkbox untoggled\n";
+	});
+	label_.createCheckbox(textures_.get("checkbox"), 100, 200,
+		[](){
+		std::cout << "checkbox toggled\n";
+	},
+		[](){
+		std::cout << "checkbox untoggled\n";
 	});
 }
 
@@ -45,17 +80,18 @@ void MenuState::processEvents(const sf::Event& ev){
 	case sf::Event::KeyPressed:
 		if (ev.key.code == sf::Keyboard::Return)
 			context_.stateManager_->change(new TitleState(context_));
-		else if (ev.key.code == sf::Keyboard::Q)
-			doAction();
+		//else if (ev.key.code == sf::Keyboard::Q)
+		//	doAction();
 		break;
 	case sf::Event::MouseButtonPressed:
 		if (ev.mouseButton.button == sf::Mouse::Left){
-			pressButton();
+			label_.press();
 		}
 		break;
 	case sf::Event::MouseButtonReleased:
 		if (ev.mouseButton.button == sf::Mouse::Left){
-			registerAction();
+			if (label_.release())
+				label_.registerAction()();
 		}
 		break;
 		//for scene testing
@@ -76,16 +112,16 @@ void MenuState::updateDebug(){
 		text_.setString("button hovered");
 	else
 		text_.setString("button not hovered");*/
-	text_.setString("button pressed: " + std::to_string(nButton()));
+	//text_.setString("button pressed: " + std::to_string(nButton()));
 }
 
 void MenuState::update(const sf::Time& dt){
 	updateDebug();
 	//context_.stateManager_->change(new TitleState(context_));
 	//testing button
-	updateButtons();
+	//updateButtons();
 
-	performAction();
+	label_.update(sf::Mouse::getPosition(context_.window_));
 }
 
 void MenuState::renderDebug() const{
@@ -94,6 +130,7 @@ void MenuState::renderDebug() const{
 
 void MenuState::render() const{
 	context_.window_.draw(background_);
+	context_.window_.draw(label_);
 	//testing button
-	drawButtons();
+	//drawButtons();
 }

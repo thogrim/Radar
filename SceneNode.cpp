@@ -15,7 +15,9 @@ void SceneNode::attachChild(ScenePtr child){
 
 SceneNode::ScenePtr SceneNode::detachChild(const SceneNode& child){
 	auto found = std::find_if(children_.begin(), children_.end(),
-		[&](ScenePtr& p){return p.get() == &child; });
+		[&](ScenePtr& p){
+		return p.get() == &child; 
+	});
 	assert(found != children_.end());
 	ScenePtr result = std::move(*found);
 	result->parent_ = nullptr;
