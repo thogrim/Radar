@@ -21,6 +21,8 @@ namespace GUI{
 		void createButton(const sf::Texture& texture, const float posX, const float posY, const std::function<void()>& action);
 		void createCheckbox(const sf::Texture& texture, const float posX, const float posY, const std::function<void()>& action, const std::function<void()>& secondAction);
 
+		void performAction();
+
 		virtual bool press();
 		virtual bool release();
 		virtual const std::function<void()>& registerAction() const;

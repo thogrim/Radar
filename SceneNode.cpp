@@ -5,6 +5,14 @@ SceneNode::SceneNode()
 	children_(){
 }
 
+//SceneNode::SceneNode(const SceneNode& node)
+//	:parent_(node.parent_){
+//	std::for_each(node.children_.begin(), node.children_.end(),
+//		[](ScenePtr& ptr){
+//		ScenePtr child(new SceneNode(*ptr));
+//	});
+//}
+
 SceneNode::~SceneNode(){
 }
 

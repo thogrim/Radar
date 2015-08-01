@@ -35,6 +35,10 @@ void Label::createCheckbox(const sf::Texture& texture, const float posX, const f
 	components_.push_back(std::move(checkbox));
 }
 
+void Label::performAction(){
+	action_();
+}
+
 bool Label::press(){
 	if (hovered_){
 		pressed_ = true;

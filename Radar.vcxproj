@@ -77,6 +77,7 @@
     <ClCompile Include="Entities\Entity.cpp" />
     <ClCompile Include="GUI\Label.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Entities\Plane.cpp" />
     <ClCompile Include="SceneNode.cpp" />
     <ClCompile Include="SpriteNode.cpp" />
     <ClCompile Include="States\MenuState.cpp" />
@@ -92,6 +93,7 @@
     <ClInclude Include="GUI\Component.h" />
     <ClInclude Include="Entities\Entity.h" />
     <ClInclude Include="GUI\Label.h" />
+    <ClInclude Include="Entities\Plane.h" />
     <ClInclude Include="ResourceHolder.h" />
     <ClInclude Include="SceneNode.h" />
     <ClInclude Include="SpriteNode.h" />

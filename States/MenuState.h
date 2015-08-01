@@ -4,11 +4,14 @@
 #include "TitleState.h"
 #include "../ChangeableContainer.h"
 #include "../GUI/Label.h"
-#include "../Entities/Entity.h"
+#include "../Entities/Plane.h"
 
 class MenuState : public State{
 private:
 	GUI::Label label_;
+	Plane plane_;
+	//Entity entity_;
+	//std::vector<std::unique_ptr<Entity>> planes_;
 public:
 	MenuState(ChangeableContainer<State>* stateManager, sf::RenderWindow& window);
 	MenuState(const Context& context);

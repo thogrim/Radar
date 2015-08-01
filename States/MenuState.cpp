@@ -2,7 +2,10 @@
 
 MenuState::MenuState(ChangeableContainer<State>* stateManager, sf::RenderWindow& window)
 	:State(stateManager,window),
-	label_(){
+	label_(),
+	plane_()/*,
+	entity_(),
+	planes_()*/{
 }
 
 MenuState::MenuState(const Context& context)
@@ -25,6 +28,7 @@ void MenuState::init(){
 		//textures_.load("planebutton", "res/img/planebutton.png");
 		textures_.load("label2", "res/img/label2.png");
 		textures_.load("checkbox", "res/img/checkbox.png");
+		textures_.load("plane", "res/img/plane.png");
 	}
 	catch (std::runtime_error& e){
 		std::cout << e.what() << std::endl;
@@ -45,13 +49,13 @@ void MenuState::init(){
 		[](){
 		std::cout << "action performed\n";
 	});
-	label_.createCheckbox(textures_.get("checkbox"),50,150,
+	label_.createCheckbox(textures_.get("checkbox"), 50, 150,
 		[](){
-			std::cout << "checkbox toggled\n";
-		},
-			[](){
-			std::cout << "checkbox untoggled\n";
-		});
+		std::cout << "checkbox toggled\n";
+	},
+		[](){
+		std::cout << "checkbox untoggled\n";
+	});
 	label_.createCheckbox(textures_.get("checkbox"), 100, 150,
 		[](){
 		std::cout << "checkbox toggled\n";
@@ -73,6 +77,18 @@ void MenuState::init(){
 		[](){
 		std::cout << "checkbox untoggled\n";
 	});
+	plane_.setTexture(textures_.get("plane"));
+	plane_.centerOrigin();
+	plane_.setVelocity(100, -60);
+	plane_.adjustMaxVelocity();
+	plane_.setPosition(400, 300);
+	//entity_.create(textures_.get("button"),0.f,0.f,0.f,0.f,0.f,0.f,0.f,0.f);
+	//entity_.setPosition(100,100);
+	//entity_.setTexture(textures_.get("plane"));
+	//std::unique_ptr<Entity> ptr(new Entity(textures_.get("plane")));
+	//planes_.push_back(std::move(ptr));
+	//planes_.back()->setPosition(100, 500);
+	//std::unique_ptr<Entity> en(new Entity(textures_.get("plane")));
 }
 
 void MenuState::processEvents(const sf::Event& ev){
@@ -91,7 +107,7 @@ void MenuState::processEvents(const sf::Event& ev){
 	case sf::Event::MouseButtonReleased:
 		if (ev.mouseButton.button == sf::Mouse::Left){
 			if (label_.release())
-				label_.registerAction()();
+				label_.performAction();
 		}
 		break;
 		//for scene testing
@@ -122,6 +138,9 @@ void MenuState::update(const sf::Time& dt){
 	//updateButtons();
 
 	label_.update(sf::Mouse::getPosition(context_.window_));
+	plane_.update(dt);
+	/*entity_.update(dt);
+	planes_.back()->update(dt);*/
 }
 
 void MenuState::renderDebug() const{
@@ -131,6 +150,7 @@ void MenuState::renderDebug() const{
 void MenuState::render() const{
 	context_.window_.draw(background_);
 	context_.window_.draw(label_);
-	//testing button
-	//drawButtons();
+	context_.window_.draw(plane_);
+	/*context_.window_.draw(entity_);
+	planes_.back()->draw(context_.window_, sf::RenderStates::Default);*/
 }

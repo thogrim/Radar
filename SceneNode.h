@@ -15,12 +15,13 @@ private:
 	virtual void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const=0;
 public:
 	SceneNode();
+	//SceneNode(const SceneNode& node);
 	virtual ~SceneNode();
 	
 	void attachChild(ScenePtr child);
 	ScenePtr detachChild(const SceneNode& child);
 	virtual void update(const sf::Time& dt)=0;
-	void draw(sf::RenderTarget& target, sf::RenderStates states) const; //virtual?
+	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 	sf::Transform getWorldTransform();
 	sf::Vector2f getWorldPosition();
 };
