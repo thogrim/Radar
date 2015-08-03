@@ -14,7 +14,7 @@ Entity::Entity(const sf::Texture& texture, const float vx, const float vy, const
 }
 
 Entity::Entity(const sf::Texture& texture)
-	: Entity(texture, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f){
+	:Entity(texture, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f){
 }
 
 Entity::Entity()

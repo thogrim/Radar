@@ -17,7 +17,7 @@ protected:
 	sf::Vector2f accValues_;	//values at which entity accelerates
 
 	virtual void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
-	void adjustVelocity(); //adjust velocity so it does not exceed max velocity
+	void adjustVelocity(); //adjusts velocity so it does not exceed max velocity
 public:
 	Entity(const sf::Texture& texture, const sf::Vector2f& velocity, const sf::Vector2f& acceleration, const sf::Vector2f& maxVelocity, const sf::Vector2f& accValues);
 	Entity(const sf::Texture& texture, const float vx, const float vy, const float ax, const float ay, const float maxVx, const float maxVy, const float accValueX, const float accValueY);

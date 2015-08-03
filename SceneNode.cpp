@@ -45,7 +45,7 @@ void SceneNode::draw(sf::RenderTarget& target, sf::RenderStates states) const{
 }
 
 sf::Transform SceneNode::getWorldTransform(){
-	sf::Transform worldTransform = sf::Transform::Identity;
+	sf::Transform worldTransform = getTransform();
 	for (const SceneNode* node = parent_; node != nullptr; node = node->parent_){
 		worldTransform *= node->getTransform();
 	}

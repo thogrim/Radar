@@ -29,6 +29,7 @@ void MenuState::init(){
 		textures_.load("label2", "res/img/label2.png");
 		textures_.load("checkbox", "res/img/checkbox.png");
 		textures_.load("plane", "res/img/plane.png");
+		textures_.load("selection", "res/img/selection.png");
 	}
 	catch (std::runtime_error& e){
 		std::cout << e.what() << std::endl;
@@ -38,16 +39,16 @@ void MenuState::init(){
 	text_.setCharacterSize(20);
 	text_.setPosition(0, context_.window_.getSize().y-100);
 	background_.setTexture(textures_.get("menuImage"));
-	background_.setPosition(100, 100);
+	background_.setPosition(0, 0);
 	//testing label
-	label_.create(textures_.get("label2"), 200, 50);
+	label_.create(textures_.get("label2"), 0, 0);
 	label_.createButton(textures_.get("button"),50,50,
 		[this](){
 		context_.stateManager_->change(new TitleState(context_));
 	});
 	label_.createButton(textures_.get("button"), 50, 100,
-		[](){
-		std::cout << "action performed\n";
+		[this](){
+		std::cout << plane_.getRotation() << std::endl;
 	});
 	label_.createCheckbox(textures_.get("checkbox"), 50, 150,
 		[](){
@@ -79,9 +80,11 @@ void MenuState::init(){
 	});
 	plane_.setTexture(textures_.get("plane"));
 	plane_.centerOrigin();
-	plane_.setVelocity(100, -60);
+	plane_.setVelocity(100.f, 90.f);
+	plane_.rotate(20.f);
 	plane_.adjustMaxVelocity();
-	plane_.setPosition(400, 300);
+	plane_.setPosition(500, 450);
+	plane_.setSelectionTexture(textures_.get("selection"));
 	//entity_.create(textures_.get("button"),0.f,0.f,0.f,0.f,0.f,0.f,0.f,0.f);
 	//entity_.setPosition(100,100);
 	//entity_.setTexture(textures_.get("plane"));
@@ -102,7 +105,14 @@ void MenuState::processEvents(const sf::Event& ev){
 	case sf::Event::MouseButtonPressed:
 		if (ev.mouseButton.button == sf::Mouse::Left){
 			label_.press();
+			if (!plane_.selected())
+				plane_.select();
+			else
+				plane_.unselect();
 		}
+		else if (ev.mouseButton.button == sf::Mouse::Right)
+			if (plane_.selected())
+				plane_.setDestination(sf::Mouse::getPosition(context_.window_));
 		break;
 	case sf::Event::MouseButtonReleased:
 		if (ev.mouseButton.button == sf::Mouse::Left){
@@ -136,9 +146,10 @@ void MenuState::update(const sf::Time& dt){
 	//context_.stateManager_->change(new TitleState(context_));
 	//testing button
 	//updateButtons();
-
-	label_.update(sf::Mouse::getPosition(context_.window_));
+	sf::Vector2i mousePos = sf::Mouse::getPosition(context_.window_);
+	label_.update(mousePos);
 	plane_.update(dt);
+	plane_.hover(mousePos);
 	/*entity_.update(dt);
 	planes_.back()->update(dt);*/
 }

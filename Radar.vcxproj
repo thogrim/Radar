@@ -87,6 +87,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
+    <ClInclude Include="Entities\Selectable.h" />
     <ClInclude Include="GUI\Button.h" />
     <ClInclude Include="ChangeableContainer.h" />
     <ClInclude Include="GUI\CheckBox.h" />
