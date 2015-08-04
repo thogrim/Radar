@@ -9,42 +9,45 @@ using namespace GUI;
 //}
 
 Label::Label()
-	: Component(sf::Texture::Texture(), 0, 0, 1),
+	: Component(1),//Component(sf::Texture::Texture(), 0, 0, 1),
 	components_(),
-	pressedComponent_(false){
+	pressedComponent_(nullptr){
 }
 
 Label::~Label(){
 }
 
-void Label::create(const sf::Texture& texture, const float posX, const float posY){
-	sprite_.setTexture(texture);
-	textureRect_ = sf::IntRect(0, 0, texture.getSize().x, texture.getSize().y / nSprites_);
-	sprite_.setTextureRect(textureRect_);
-	///needed?
-	setPosition(posX, posY);
-}
+//void Label::create(const sf::Texture& texture, const float posX, const float posY){
+//	sprite_.setTexture(texture);
+//	textureRect_ = sf::IntRect(0, 0, texture.getSize().x, texture.getSize().y / nSprites_);
+//	sprite_.setTextureRect(textureRect_);
+//	///needed?
+//	setPosition(posX, posY);
+//}
 
-void Label::createButton(const sf::Texture& texture, const float posX, const float posY, const std::function<void()>& action){
-	CompPtr button(new Button(texture, posX, posY, action, getPosition()));
-	components_.push_back(std::move(button));
-}
+//void Label::createButton(const sf::Texture& texture, const float posX, const float posY, const std::function<void()>& action){
+//	CompPtr button(new Button(texture, posX, posY, action, getPosition()));
+//	components_.push_back(std::move(button));
+//}
+//
+//void Label::createCheckbox(const sf::Texture& texture, const float posX, const float posY, const std::function<void()>& action, const std::function<void()>& secondAction){
+//	CompPtr checkbox(new Checkbox(texture, posX, posY, action, secondAction, getPosition()));
+//	components_.push_back(std::move(checkbox));
+//}
 
-void Label::createCheckbox(const sf::Texture& texture, const float posX, const float posY, const std::function<void()>& action, const std::function<void()>& secondAction){
-	CompPtr checkbox(new Checkbox(texture, posX, posY, action, secondAction, getPosition()));
-	components_.push_back(std::move(checkbox));
-}
-
-void Label::performAction(){
-	action_();
+void Label::attachComponent(CompPtr component){
+	component->setParentPosition(Component::getPosition());
+	components_.push_back(std::move(component));
+	//components_.back()->setParentPosition(getPosition());
 }
 
 bool Label::press(){
+	pressedComponent_ = nullptr;
 	if (hovered_){
 		pressed_ = true;
 		for (auto& c : components_){
 			if (c->press()){
-				pressedComponent_ = true;
+				pressedComponent_ = c.get();
 				return true;
 			}
 		}
@@ -64,10 +67,9 @@ bool Label::release(){
 		assert(found != components_.end());
 		CompPtr& c = *found;
 		pressed_ = false;
-		pressedComponent_ = false;
-		//if presssed component is hovered, register action
+		//pressedComponent_ = nullptr;
+		//if presssed component is hovered return true 
 		if (c->release()){
-			action_ = c->registerAction();
 			return true;
 		}
 		else
@@ -87,7 +89,7 @@ bool Label::release(){
 		CompPtr& c = *found;
 		//not hovered so no need to check if you should register action
 		c->release();
-		pressedComponent_ = false;
+		//pressedComponent_ = nullptr;
 		pressed_ = false;
 		return false;
 	}
@@ -99,8 +101,13 @@ bool Label::release(){
 		return false;
 }
 
-const std::function<void()>& Label::registerAction() const{
-	return action_;
+const std::function<void()> Label::getAction() const{
+	return pressedComponent_ ? pressedComponent_->getAction() : [](){};
+}
+
+void Label::performAction() const{
+	if (pressedComponent_)
+		pressedComponent_->performAction();
 }
 
 void Label::update(const sf::Vector2i& mousePos){

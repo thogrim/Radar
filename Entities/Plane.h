@@ -1,6 +1,7 @@
 /*
 	TODO:
 	in setDestination method check if it is possible to reach destination
+	change selection sprite to primitive
 */
 #pragma once
 
@@ -20,12 +21,14 @@ private:
 	bool selected_;
 	bool hasDestination_;
 	sf::Vector2f destination_;
+	//float toRotate;
 
 	sf::IntRect hoveredRect_;
 	sf::IntRect selectedRect_;
 	sf::Sprite selectionSprite_;
 
 	void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
+	float countAngleDifferrence();
 public:
 	Plane(const sf::Texture& texture, const sf::Vector2f& velocity, const sf::Vector2f& acceleration, const sf::Vector2f& maxVelocity, const sf::Vector2f& accValues);
 	Plane(const sf::Texture& texture, const float vx, const float vy, const float ax, const float ay, const float maxVx, const float maxVy, const float accValueX, const float accValueY);

@@ -3,6 +3,7 @@
 MenuState::MenuState(ChangeableContainer<State>* stateManager, sf::RenderWindow& window)
 	:State(stateManager,window),
 	label_(),
+	button_(),
 	plane_()/*,
 	entity_(),
 	planes_()*/{
@@ -41,46 +42,46 @@ void MenuState::init(){
 	background_.setTexture(textures_.get("menuImage"));
 	background_.setPosition(0, 0);
 	//testing label
-	label_.create(textures_.get("label2"), 0, 0);
-	label_.createButton(textures_.get("button"),50,50,
-		[this](){
+	//OLD INIT CODE DOWN BELOW
+	label_.setTexture(textures_.get("label2"));
+	label_.setPosition(10, 10);
+	//adding 1st button
+	std::unique_ptr<GUI::Button> button1(new GUI::Button());
+	button1->setTexture(textures_.get("button"));
+	button1->setPosition(50, 50);
+	button1->setAction([this](){
 		context_.stateManager_->change(new TitleState(context_));
 	});
-	label_.createButton(textures_.get("button"), 50, 100,
-		[this](){
-		std::cout << plane_.getRotation() << std::endl;
+	label_.attachComponent(std::move(button1));
+	//adding 2nd button
+	std::unique_ptr<GUI::Button> button2(new GUI::Button());
+	button2->setTexture(textures_.get("button"));
+	button2->setPosition(50, 100);
+	button2->setAction([this](){
+		std::cout << plane_.getWorldPosition().x << " " << plane_.getWorldPosition().y << std::endl;
 	});
-	label_.createCheckbox(textures_.get("checkbox"), 50, 150,
-		[](){
+	label_.attachComponent(std::move(button2));
+	//adding checkbox
+	std::unique_ptr<GUI::Checkbox> checkbox1(new GUI::Checkbox());
+	checkbox1->setTexture(textures_.get("checkbox"));
+	checkbox1->setPosition(50, 150);
+	checkbox1->setToggleAction([this](){
 		std::cout << "checkbox toggled\n";
-	},
-		[](){
+	});
+	checkbox1->setUntoggleAction([this](){
 		std::cout << "checkbox untoggled\n";
 	});
-	label_.createCheckbox(textures_.get("checkbox"), 100, 150,
-		[](){
-		std::cout << "checkbox toggled\n";
-	},
-		[](){
-		std::cout << "checkbox untoggled\n";
+	label_.attachComponent(std::move(checkbox1));
+	//adding standalone button
+	button_.setTexture(textures_.get("button"));
+	button_.setPosition(600, 0);
+	button_.setAction([](){
+		std::cout << "standalone button action\n";
 	});
-	label_.createCheckbox(textures_.get("checkbox"), 50, 200,
-		[](){
-		std::cout << "checkbox toggled\n";
-	},
-		[](){
-		std::cout << "checkbox untoggled\n";
-	});
-	label_.createCheckbox(textures_.get("checkbox"), 100, 200,
-		[](){
-		std::cout << "checkbox toggled\n";
-	},
-		[](){
-		std::cout << "checkbox untoggled\n";
-	});
+	//plane init
 	plane_.setTexture(textures_.get("plane"));
 	plane_.centerOrigin();
-	plane_.setVelocity(100.f, 90.f);
+	plane_.setVelocity(0.f, 90.f);
 	plane_.rotate(20.f);
 	plane_.adjustMaxVelocity();
 	plane_.setPosition(500, 450);
@@ -105,6 +106,7 @@ void MenuState::processEvents(const sf::Event& ev){
 	case sf::Event::MouseButtonPressed:
 		if (ev.mouseButton.button == sf::Mouse::Left){
 			label_.press();
+			button_.press();
 			if (!plane_.selected())
 				plane_.select();
 			else
@@ -118,6 +120,8 @@ void MenuState::processEvents(const sf::Event& ev){
 		if (ev.mouseButton.button == sf::Mouse::Left){
 			if (label_.release())
 				label_.performAction();
+			else if (button_.release())
+				button_.performAction();
 		}
 		break;
 		//for scene testing
@@ -148,6 +152,7 @@ void MenuState::update(const sf::Time& dt){
 	//updateButtons();
 	sf::Vector2i mousePos = sf::Mouse::getPosition(context_.window_);
 	label_.update(mousePos);
+	button_.update(mousePos);
 	plane_.update(dt);
 	plane_.hover(mousePos);
 	/*entity_.update(dt);
@@ -161,7 +166,47 @@ void MenuState::renderDebug() const{
 void MenuState::render() const{
 	context_.window_.draw(background_);
 	context_.window_.draw(label_);
+	context_.window_.draw(button_);
 	context_.window_.draw(plane_);
 	/*context_.window_.draw(entity_);
 	planes_.back()->draw(context_.window_, sf::RenderStates::Default);*/
 }
+
+//old init code
+//label_.create(textures_.get("label2"), 0, 0);
+//label_.createButton(textures_.get("button"),50,50,
+//	[this](){
+//	context_.stateManager_->change(new TitleState(context_));
+//});
+//label_.createButton(textures_.get("button"), 50, 100,
+//	[this](){
+//	std::cout << plane_.getRotation() << std::endl;
+//});
+//label_.createCheckbox(textures_.get("checkbox"), 50, 150,
+//	[](){
+//	std::cout << "checkbox toggled\n";
+//},
+//	[](){
+//	std::cout << "checkbox untoggled\n";
+//});
+//label_.createCheckbox(textures_.get("checkbox"), 100, 150,
+//	[](){
+//	std::cout << "checkbox toggled\n";
+//},
+//	[](){
+//	std::cout << "checkbox untoggled\n";
+//});
+//label_.createCheckbox(textures_.get("checkbox"), 50, 200,
+//	[](){
+//	std::cout << "checkbox toggled\n";
+//},
+//	[](){
+//	std::cout << "checkbox untoggled\n";
+//});
+//label_.createCheckbox(textures_.get("checkbox"), 100, 200,
+//	[](){
+//	std::cout << "checkbox toggled\n";
+//},
+//	[](){
+//	std::cout << "checkbox untoggled\n";
+//});

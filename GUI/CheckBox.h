@@ -14,17 +14,21 @@ namespace GUI{
 			PRESSED_TOGGLED = 6
 		};
 		bool toggled_;
-		std::function<void()> secondAction_;
+		std::function<void()> toggleAction_;
+		std::function<void()> untoggleAction_;
 	public:
-		Checkbox(const sf::Texture& texture, const float posX, const float posY, const std::function<void()>& action, const std::function<void()>& secondAction, const sf::Vector2f& parentPos);
-		Checkbox(const sf::Texture& texture, const float posX, const float posY, const std::function<void()>& action, const std::function<void()>& secondAction, const float parentPosX, const float parentPosY);
-		Checkbox(const sf::Texture& texture, const float posX, const float posY, const std::function<void()>& action, const std::function<void()>& secondAction);
-		//Checkbox()
+		//Checkbox(const sf::Texture& texture, const float posX, const float posY, const std::function<void()>& action, const std::function<void()>& secondAction, const sf::Vector2f& parentPos);
+		//Checkbox(const sf::Texture& texture, const float posX, const float posY, const std::function<void()>& action, const std::function<void()>& secondAction, const float parentPosX, const float parentPosY);
+		//Checkbox(const sf::Texture& texture, const float posX, const float posY, const std::function<void()>& action, const std::function<void()>& secondAction);
+		Checkbox();
 		~Checkbox();
 
+		void setToggleAction(const std::function<void()>& action);
+		void setUntoggleAction(const std::function<void()>& action);
 		bool press();
 		bool release();
-		const std::function<void()>& registerAction() const;
+		const std::function<void()> getAction() const;
+		void performAction() const;
 		void update(const sf::Vector2i& mousePos);
 	};
 }

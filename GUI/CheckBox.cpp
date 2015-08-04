@@ -2,30 +2,42 @@
 
 using namespace GUI;
 
-Checkbox::Checkbox(const sf::Texture& texture, const float posX, const float posY, const std::function<void()>& action, const std::function<void()>& secondAction, const sf::Vector2f& parentPos)
-	:Component(texture,posX,posY,6,action,parentPos),
-	secondAction_(secondAction),
-	toggled_(false){
-}
+//Checkbox::Checkbox(const sf::Texture& texture, const float posX, const float posY, const std::function<void()>& action, const std::function<void()>& secondAction, const sf::Vector2f& parentPos)
+//	:Component(texture,posX,posY,6,action,parentPos),
+//	secondAction_(secondAction),
+//	toggled_(false){
+//}
+//
+//Checkbox::Checkbox(const sf::Texture& texture, const float posX, const float posY, const std::function<void()>& action, const std::function<void()>& secondAction, const float parentPosX, const float parentPosY)
+//	:Checkbox(texture,posX,posY,action,secondAction,sf::Vector2f(parentPosX,parentPosY)){
+//}
+//
+//Checkbox::Checkbox(const sf::Texture& texture, const float posX, const float posY, const std::function<void()>& action, const std::function<void()>& secondAction)
+//	: Checkbox(texture, posX, posY, action, secondAction, sf::Vector2f(0, 0)){
+//}
 
-Checkbox::Checkbox(const sf::Texture& texture, const float posX, const float posY, const std::function<void()>& action, const std::function<void()>& secondAction, const float parentPosX, const float parentPosY)
-	:Checkbox(texture,posX,posY,action,secondAction,sf::Vector2f(parentPosX,parentPosY)){
-}
-
-Checkbox::Checkbox(const sf::Texture& texture, const float posX, const float posY, const std::function<void()>& action, const std::function<void()>& secondAction)
-	: Checkbox(texture, posX, posY, action, secondAction, sf::Vector2f(0, 0)){
+Checkbox::Checkbox()
+	:Component(6),
+	toggled_(false),
+	toggleAction_(),
+	untoggleAction_(){
 }
 
 Checkbox::~Checkbox(){
 }
 
+void Checkbox::setToggleAction(const std::function<void()>& action){
+	toggleAction_ = action;
+}
+
+void Checkbox::setUntoggleAction(const std::function<void()>& action){
+	untoggleAction_ = action;
+}
+
 bool Checkbox::press(){
 	if (hovered_){
 		pressed_ = true;
-		if (toggled_)
-			setSprite(Sprite::PRESSED_TOGGLED);
-		else
-			setSprite(Sprite::PRESSED_NOT_TOGGLED);
+		toggled_ ? setSprite(Sprite::PRESSED_TOGGLED) : setSprite(Sprite::PRESSED_NOT_TOGGLED);
 		return true;
 	}
 	else
@@ -42,11 +54,12 @@ bool Checkbox::release(){
 		return false;
 }
 
-const std::function<void()>& Checkbox::registerAction() const{
-	if (!toggled_)
-		return action_;
-	else
-		return secondAction_;
+const std::function<void()> Checkbox::getAction() const{
+	return toggled_ ? untoggleAction_ : toggleAction_;
+}
+
+void Checkbox::performAction() const{
+	toggled_ ? toggleAction_() : untoggleAction_();
 }
 
 void Checkbox::update(const sf::Vector2i& mousePos){

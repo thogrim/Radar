@@ -1,4 +1,2 @@
-﻿  MenuState.cpp
-c:\users\thogrim\documents\visual studio 2013\projects\game\radar\entities\plane.h(38): warning C4244: "argument" : konwersja z "unsigned int" do "float", możliwa utrata danych
-c:\users\thogrim\documents\visual studio 2013\projects\game\radar\states\menustate.cpp(40): warning C4244: "argument" : konwersja z "unsigned int" do "float", możliwa utrata danych
+﻿  CheckBox.cpp
   Radar.vcxproj -> C:\Users\Thogrim\Documents\Visual Studio 2013\Projects\Game\Debug\Radar.exe
