@@ -21,13 +21,13 @@ private:
 	bool selected_;
 	bool hasDestination_;
 	sf::Vector2f destination_;
-	//float toRotate;
 
 	sf::IntRect hoveredRect_;
 	sf::IntRect selectedRect_;
 	sf::Sprite selectionSprite_;
 
 	void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
+	void updateCurrent(const sf::Time& dt);
 	float countAngleDifferrence();
 public:
 	Plane(const sf::Texture& texture, const sf::Vector2f& velocity, const sf::Vector2f& acceleration, const sf::Vector2f& maxVelocity, const sf::Vector2f& accValues);
@@ -35,32 +35,11 @@ public:
 	Plane();
 	~Plane();
 
-	void setSelectionTexture(const sf::Texture& texture){
-		selectionSprite_.setTexture(texture);
-		selectionSprite_.setTextureRect(sf::IntRect(0, 0, 0, 0));
-		selectionSprite_.setOrigin(texture.getSize().x/2, texture.getSize().y / 4);
-		hoveredRect_= sf::IntRect(0, 0, texture.getSize().x, texture.getSize().y/2);
-		selectedRect_ = sf::IntRect(0, texture.getSize().y / 2, texture.getSize().x, texture.getSize().y / 2);
-	}
-
-	bool selected() const{
-		return selected_;
-	}
-
-	bool hovered() const{
-		return  hovered_;
-	}
-
-	/*void printInfo(){
-		std::cout << "global bounds:\nwidth: " << sprite_.getGlobalBounds().width
-			<< "\nheight: " << sprite_.getGlobalBounds().height
-			<< "\ntop: " << sprite_.getGlobalBounds().top
-			<< "\nleft: " << sprite_.getGlobalBounds().left
-			<< std::endl;
-	}*/
+	void setSelectionTexture(const sf::Texture& texture);
+	bool selected() const;
+	bool hovered() const;
 	bool hover(const sf::Vector2i& mousePos);
 	bool select();
 	bool unselect();
 	void setDestination(const sf::Vector2i& destination);
-	void update(const sf::Time& dt);
 };

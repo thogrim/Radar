@@ -11,15 +11,14 @@ SpriteNode::SpriteNode()
 	sprite_(){
 }
 
-SpriteNode::~SpriteNode()
-{
+SpriteNode::~SpriteNode(){
 }
 
 void SpriteNode::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const{
 	target.draw(sprite_, states);
 }
 
-void SpriteNode::update(const sf::Time& dt){
+void SpriteNode::updateCurrent(const sf::Time& dt){
 
 }
 

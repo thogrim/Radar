@@ -33,8 +33,19 @@ SceneNode::ScenePtr SceneNode::detachChild(const SceneNode& child){
 	return result;
 }
 
-void SceneNode::update(const sf::Time& dt){
+void SceneNode::updateCurrent(const sf::Time& dt){
+	//do nothing
+}
 
+void SceneNode::update(const sf::Time& dt){
+	updateCurrent(dt);
+	for (const ScenePtr& ch : children_){
+		ch->update(dt);
+	}
+}
+
+void SceneNode::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const{
+	//do nothing
 }
 
 void SceneNode::draw(sf::RenderTarget& target, sf::RenderStates states) const{

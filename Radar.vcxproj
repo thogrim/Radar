@@ -80,6 +80,7 @@
     <ClCompile Include="Entities\Plane.cpp" />
     <ClCompile Include="SceneNode.cpp" />
     <ClCompile Include="SpriteNode.cpp" />
+    <ClCompile Include="States\GameplayState.cpp" />
     <ClCompile Include="States\MenuState.cpp" />
     <ClCompile Include="States\State.cpp" />
     <ClCompile Include="StateManager.cpp" />
@@ -98,6 +99,7 @@
     <ClInclude Include="ResourceHolder.h" />
     <ClInclude Include="SceneNode.h" />
     <ClInclude Include="SpriteNode.h" />
+    <ClInclude Include="States\GameplayState.h" />
     <ClInclude Include="States\MenuState.h" />
     <ClInclude Include="States\State.h" />
     <ClInclude Include="StateManager.h" />

@@ -12,7 +12,8 @@ private:
 	SceneNode* parent_;
 	std::vector<ScenePtr> children_;
 
-	virtual void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const=0;
+	virtual void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
+	virtual void updateCurrent(const sf::Time& dt);
 public:
 	SceneNode();
 	//SceneNode(const SceneNode& node);
@@ -20,7 +21,7 @@ public:
 	
 	void attachChild(ScenePtr child);
 	ScenePtr detachChild(const SceneNode& child);
-	virtual void update(const sf::Time& dt)=0;
+	void update(const sf::Time& dt);
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 	sf::Transform getWorldTransform();
 	sf::Vector2f getWorldPosition();

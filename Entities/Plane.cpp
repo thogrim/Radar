@@ -28,11 +28,25 @@ Plane::Plane()
 Plane::~Plane(){
 }
 
+void Plane::setSelectionTexture(const sf::Texture& texture){
+	selectionSprite_.setTexture(texture);
+	selectionSprite_.setTextureRect(sf::IntRect(0, 0, 0, 0));
+	selectionSprite_.setOrigin(texture.getSize().x / 2, texture.getSize().y / 4);
+	hoveredRect_ = sf::IntRect(0, 0, texture.getSize().x, texture.getSize().y / 2);
+	selectedRect_ = sf::IntRect(0, texture.getSize().y / 2, texture.getSize().x, texture.getSize().y / 2);
+}
+
+bool Plane::selected() const{
+	return selected_;
+}
+
+bool Plane::hovered() const{
+	return  hovered_;
+}
+
 bool Plane::hover(const sf::Vector2i& mousePos){
 	sf::Vector2i distance = static_cast<sf::Vector2i>(getWorldPosition()) - mousePos;
 	hovered_ = (sqrt(pow(distance.x, 2) + pow(distance.y, 2))) < 30;
-	//if (hovered_)
-	//	selectionSprite_.setTextureRect(hoveredRect_);
 	return hovered_;
 }
 
@@ -66,15 +80,14 @@ void Plane::setDestination(const sf::Vector2i& destination){
 	destination_ = static_cast<sf::Vector2f>(destination);
 	//start heading towards destination
 	float angleDifference = countAngleDifferrence();
-	if ((angleDifference > 0.f && angleDifference < 180.f) || (angleDifference > -360.f && angleDifference < -180.f)){
+	if ((angleDifference > 0.f && angleDifference < 180.f) || (angleDifference > -360.f && angleDifference < -180.f))
 		velocity_.y = maxVelocity_.y;
-	}
-	else if ((angleDifference > -180.f && angleDifference < 0.f) || (angleDifference > 180.f&&angleDifference < 360.f)){
+	else if ((angleDifference > -180.f && angleDifference < 0.f) || (angleDifference > 180.f&&angleDifference < 360.f))
 		velocity_.y = -maxVelocity_.y;
-	}
+	velocity_.x = maxVelocity_.x;
 }
 
-void Plane::update(const sf::Time& dt){
+void Plane::updateCurrent(const sf::Time& dt){
 	if (hasDestination_){
 		float angleDifference = abs(countAngleDifferrence());
 		if (angleDifference < 1.f){
@@ -82,6 +95,11 @@ void Plane::update(const sf::Time& dt){
 			hasDestination_ = false;
 		}
 	}
+
+	if (abs((getWorldPosition() - destination_).x) < 5.f &&
+		abs((getWorldPosition() - destination_).y) < 5.f)
+		setVelocity(0.f, 0.f);
+
 	//calculate offset
 	float angle = -getRotation() +90.f;
 	float vx = velocity_.x*cos(angle*PI / 180.f);

@@ -2,6 +2,7 @@
 
 #include "State.h"
 #include "TitleState.h"
+#include "GameplayState.h"
 #include "../ChangeableContainer.h"
 //#include "../GUI/Component.h"
 #include "../GUI/Label.h"

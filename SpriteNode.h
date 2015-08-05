@@ -5,13 +5,14 @@
 class SpriteNode:public SceneNode{
 protected:
 	sf::Sprite sprite_;
+
 	void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
+	void updateCurrent(const sf::Time& dt);
 public:
 	SpriteNode(const sf::Texture& texture);
 	SpriteNode();
 	~SpriteNode();
 
-	virtual void update(const sf::Time& dt);
 	void setTexture(const sf::Texture& texture);
 };
 

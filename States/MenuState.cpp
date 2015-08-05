@@ -58,7 +58,8 @@ void MenuState::init(){
 	button2->setTexture(textures_.get("button"));
 	button2->setPosition(50, 100);
 	button2->setAction([this](){
-		std::cout << plane_.getWorldPosition().x << " " << plane_.getWorldPosition().y << std::endl;
+		context_.stateManager_->change(new GameplayState(context_));
+		//std::cout << plane_.getWorldPosition().x << " " << plane_.getWorldPosition().y << std::endl;
 	});
 	label_.attachComponent(std::move(button2));
 	//adding checkbox
@@ -81,7 +82,7 @@ void MenuState::init(){
 	//plane init
 	plane_.setTexture(textures_.get("plane"));
 	plane_.centerOrigin();
-	plane_.setVelocity(0.f, 90.f);
+	plane_.setVelocity(100.f, 60.f);
 	plane_.rotate(20.f);
 	plane_.adjustMaxVelocity();
 	plane_.setPosition(500, 450);
