@@ -1,0 +1,10 @@
+[SlowPlane]
+position:150,50
+rotation:60
+time:0
+[end]
+[FastPlane]
+position:300,400
+rotation:160
+time:5
+[end]

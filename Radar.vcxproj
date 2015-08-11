@@ -78,13 +78,17 @@
     <ClCompile Include="GUI\Label.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Entities\Plane.cpp" />
+    <ClCompile Include="Entities\Mountain.cpp" />
     <ClCompile Include="SceneNode.cpp" />
+    <ClCompile Include="Entities\ShapeEntity.cpp" />
+    <ClCompile Include="Entities\SpriteEntity.cpp" />
     <ClCompile Include="SpriteNode.cpp" />
     <ClCompile Include="States\GameplayState.cpp" />
     <ClCompile Include="States\MenuState.cpp" />
     <ClCompile Include="States\State.cpp" />
     <ClCompile Include="StateManager.cpp" />
     <ClCompile Include="States\TitleState.cpp" />
+    <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -96,14 +100,18 @@
     <ClInclude Include="Entities\Entity.h" />
     <ClInclude Include="GUI\Label.h" />
     <ClInclude Include="Entities\Plane.h" />
+    <ClInclude Include="Entities\Mountain.h" />
     <ClInclude Include="ResourceHolder.h" />
     <ClInclude Include="SceneNode.h" />
+    <ClInclude Include="Entities\ShapeEntity.h" />
+    <ClInclude Include="Entities\SpriteEntity.h" />
     <ClInclude Include="SpriteNode.h" />
     <ClInclude Include="States\GameplayState.h" />
     <ClInclude Include="States\MenuState.h" />
     <ClInclude Include="States\State.h" />
     <ClInclude Include="StateManager.h" />
     <ClInclude Include="States\TitleState.h" />
+    <ClInclude Include="World.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

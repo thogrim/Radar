@@ -3,10 +3,7 @@
 MenuState::MenuState(ChangeableContainer<State>* stateManager, sf::RenderWindow& window)
 	:State(stateManager,window),
 	label_(),
-	button_(),
-	plane_()/*,
-	entity_(),
-	planes_()*/{
+	button_(){
 }
 
 MenuState::MenuState(const Context& context)
@@ -79,14 +76,6 @@ void MenuState::init(){
 	button_.setAction([](){
 		std::cout << "standalone button action\n";
 	});
-	//plane init
-	plane_.setTexture(textures_.get("plane"));
-	plane_.centerOrigin();
-	plane_.setVelocity(100.f, 60.f);
-	plane_.rotate(20.f);
-	plane_.adjustMaxVelocity();
-	plane_.setPosition(500, 450);
-	plane_.setSelectionTexture(textures_.get("selection"));
 	//entity_.create(textures_.get("button"),0.f,0.f,0.f,0.f,0.f,0.f,0.f,0.f);
 	//entity_.setPosition(100,100);
 	//entity_.setTexture(textures_.get("plane"));
@@ -108,14 +97,14 @@ void MenuState::processEvents(const sf::Event& ev){
 		if (ev.mouseButton.button == sf::Mouse::Left){
 			label_.press();
 			button_.press();
-			if (!plane_.selected())
-				plane_.select();
-			else
-				plane_.unselect();
+			//if (!plane_.selected())
+			//	plane_.select();
+			//else
+			//	plane_.unselect();
 		}
-		else if (ev.mouseButton.button == sf::Mouse::Right)
-			if (plane_.selected())
-				plane_.setDestination(sf::Mouse::getPosition(context_.window_));
+		//else if (ev.mouseButton.button == sf::Mouse::Right)
+			//if (plane_.selected())
+			//	plane_.setDestination(sf::Mouse::getPosition(context_.window_));
 		break;
 	case sf::Event::MouseButtonReleased:
 		if (ev.mouseButton.button == sf::Mouse::Left){
@@ -154,8 +143,6 @@ void MenuState::update(const sf::Time& dt){
 	sf::Vector2i mousePos = sf::Mouse::getPosition(context_.window_);
 	label_.update(mousePos);
 	button_.update(mousePos);
-	plane_.update(dt);
-	plane_.hover(mousePos);
 	/*entity_.update(dt);
 	planes_.back()->update(dt);*/
 }
@@ -168,7 +155,6 @@ void MenuState::render() const{
 	context_.window_.draw(background_);
 	context_.window_.draw(label_);
 	context_.window_.draw(button_);
-	context_.window_.draw(plane_);
 	/*context_.window_.draw(entity_);
 	planes_.back()->draw(context_.window_, sf::RenderStates::Default);*/
 }

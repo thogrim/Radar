@@ -1,39 +1,36 @@
 #include "Plane.h"
 
-Plane::Plane(const sf::Texture& texture, const sf::Vector2f& velocity, const sf::Vector2f& acceleration, const sf::Vector2f& maxVelocity, const sf::Vector2f& accValues)
-	:Entity(texture, velocity, acceleration, maxVelocity, accValues),
+Plane::Plane(const sf::Vector2f& velocity, float hitboxRadius, const sf::Texture& texture)
+	:SpriteEntity(velocity, sf::Vector2f(0.f, 0.f), velocity, sf::Vector2f(0.f, 0.f)),
 	hovered_(false),
 	selected_(false),
 	hasDestination_(false),
 	destination_(0.f, 0.f),
-	hoveredRect_(),
-	selectedRect_(),
-	selectionSprite_(){
+	selection_(),
+	hitboxRadius_(hitboxRadius){
+	setTexture(texture);
+	centerOrigin();
+	selection_.setRadius(hitboxRadius_);
+	selection_.setOutlineThickness(-3);
+	selection_.setFillColor(sf::Color::Transparent);
+	selection_.setOrigin(sf::Vector2f(hitboxRadius,hitboxRadius));
 }
 
-Plane::Plane(const sf::Texture& texture, const float vx, const float vy, const float ax, const float ay, const float maxVx, const float maxVy, const float accValueX, const float accValueY)
-	:Plane(texture, sf::Vector2f(vx, vy), sf::Vector2f(ax, ay), sf::Vector2f(maxVx, maxVy), sf::Vector2f(accValueX, accValueY)){
+Plane::Plane(float vx, float vy, float hitboxRadius, const sf::Texture& texture)
+	:Plane(sf::Vector2f(vx, vy), hitboxRadius, texture){
 }
 
-Plane::Plane()
-	: Entity(),
-	selected_(false),
-	hasDestination_(false),
-	destination_(0.f, 0.f),
-	hoveredRect_(),
-	selectedRect_(),
-	selectionSprite_(){
+Plane::Plane(const sf::Texture& texture)
+	: Plane(0.f, 0.f, 0.f, texture){
 }
 
 Plane::~Plane(){
 }
 
-void Plane::setSelectionTexture(const sf::Texture& texture){
-	selectionSprite_.setTexture(texture);
-	selectionSprite_.setTextureRect(sf::IntRect(0, 0, 0, 0));
-	selectionSprite_.setOrigin(texture.getSize().x / 2, texture.getSize().y / 4);
-	hoveredRect_ = sf::IntRect(0, 0, texture.getSize().x, texture.getSize().y / 2);
-	selectedRect_ = sf::IntRect(0, texture.getSize().y / 2, texture.getSize().x, texture.getSize().y / 2);
+void Plane::setHitboxRadius(float radius){
+	hitboxRadius_ = radius;
+	selection_.setRadius(hitboxRadius_); 
+	selection_.setOrigin(sf::Vector2f(radius, radius));
 }
 
 bool Plane::selected() const{
@@ -45,8 +42,8 @@ bool Plane::hovered() const{
 }
 
 bool Plane::hover(const sf::Vector2i& mousePos){
-	sf::Vector2i distance = static_cast<sf::Vector2i>(getWorldPosition()) - mousePos;
-	hovered_ = (sqrt(pow(distance.x, 2) + pow(distance.y, 2))) < 30;
+	sf::Vector2i distance = static_cast<sf::Vector2i>(getPosition()) - mousePos;
+	hovered_ = (sqrt(pow(distance.x, 2) + pow(distance.y, 2))) < hitboxRadius_;
 	return hovered_;
 }
 
@@ -59,17 +56,12 @@ bool Plane::select(){
 		return false;
 }
 
-bool Plane::unselect(){
-	if (selected_){
-		selected_ = false;
-		return true;
-	}
-	else
-		return false;
+void Plane::unselect(){
+	selected_ = false;
 }
 
 float Plane::countAngleDifferrence(){
-	float angle1 = 180.f + atan2(destination_.y - getWorldPosition().y, destination_.x - getWorldPosition().x)*180.f / PI;
+	float angle1 = 180.f + atan2(destination_.y - getPosition().y, destination_.x - getPosition().x)*180.f / PI;
 	angle1 < 90.f ? angle1 += 270.f : angle1 -= 90.f;
 	float angle2 = angle1 - getRotation();
 	return angle2;
@@ -87,7 +79,7 @@ void Plane::setDestination(const sf::Vector2i& destination){
 	velocity_.x = maxVelocity_.x;
 }
 
-void Plane::updateCurrent(const sf::Time& dt){
+void Plane::update(const sf::Time& dt){
 	if (hasDestination_){
 		float angleDifference = abs(countAngleDifferrence());
 		if (angleDifference < 1.f){
@@ -96,8 +88,9 @@ void Plane::updateCurrent(const sf::Time& dt){
 		}
 	}
 
-	if (abs((getWorldPosition() - destination_).x) < 5.f &&
-		abs((getWorldPosition() - destination_).y) < 5.f)
+	//stop moving when destination is reached
+	if (abs((getPosition() - destination_).x) < 5.f &&
+		abs((getPosition() - destination_).y) < 5.f)
 		setVelocity(0.f, 0.f);
 
 	//calculate offset
@@ -109,15 +102,15 @@ void Plane::updateCurrent(const sf::Time& dt){
 	move(vx*dt.asSeconds(), vy*dt.asSeconds());
 
 	//selection sprite update
-	if (hovered_)
-		selectionSprite_.setTextureRect(hoveredRect_);
-	else if (selected_)
-		selectionSprite_.setTextureRect(selectedRect_);
-	else
-		selectionSprite_.setTextureRect(sf::IntRect(0, 0, 0, 0));
+	if (selected_)
+		selection_.setOutlineColor(sf::Color(43, 212, 52));
+	else if (hovered_)
+		selection_.setOutlineColor(sf::Color(217, 255, 0));
 }
 
-void Plane::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const{
+void Plane::draw(sf::RenderTarget& target, sf::RenderStates states) const{
+	states.transform *= getTransform();
 	target.draw(sprite_, states);
-	target.draw(selectionSprite_, states);
+	if (selected_ || hovered_)
+		target.draw(selection_, states);
 }

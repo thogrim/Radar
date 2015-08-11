@@ -19,6 +19,7 @@ public:
 	//SceneNode(const SceneNode& node);
 	virtual ~SceneNode();
 	
+
 	void attachChild(ScenePtr child);
 	ScenePtr detachChild(const SceneNode& child);
 	void update(const sf::Time& dt);
