@@ -1,13 +1,2 @@
-﻿  Application.cpp
-c:\users\thogrim\documents\visual studio 2013\projects\game\radar\application.cpp(22): warning C4244: "argument" : konwersja z "float" do "unsigned int", możliwa utrata danych
-c:\users\thogrim\documents\visual studio 2013\projects\game\radar\application.cpp(31): warning C4244: "argument" : konwersja z "int" do "float", możliwa utrata danych
-c:\users\thogrim\documents\visual studio 2013\projects\game\radar\application.cpp(34): warning C4244: "argument" : konwersja z "unsigned int" do "float", możliwa utrata danych
-  Generowanie kodu...
-  Pomijanie... (nie wykryto odpowiednich zmian)
-  main.cpp
-  World.cpp
-  TitleState.cpp
-  MenuState.cpp
-  GameplayState.cpp
-  StateManager.cpp
+﻿  World.cpp
   Radar.vcxproj -> C:\Users\Thogrim\Documents\Visual Studio 2013\Projects\Game\Debug\Radar.exe

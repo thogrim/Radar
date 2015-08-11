@@ -4,7 +4,7 @@ GameplayState::GameplayState(ChangeableContainer<State>* stateManager, sf::Rende
 	:State(stateManager,window),
 	menuButton_(),
 	mountain_(),
-	world_(/*window,*/textures_,fonts_){
+	world_(textures_,fonts_){
 	std::vector<std::pair<float, float>> vertices;
 	vertices.push_back(std::make_pair<float,float>(50,50));
 	vertices.push_back(std::make_pair<float, float>(500, 60));
