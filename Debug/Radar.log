@@ -1,2 +1,27 @@
-﻿  SpriteEntity.cpp
+﻿  World.cpp
+c:\users\thogrim\documents\visual studio 2013\projects\game\radar\world.cpp(127): warning C4244: "argument" : konwersja z "int" do "float", możliwa utrata danych
+  Collider.cpp
+  Generowanie kodu...
+  Trwa kompilowanie...
+  main.cpp
+  TitleState.cpp
+  MenuState.cpp
+c:\users\thogrim\documents\visual studio 2013\projects\game\radar\states\menustate.cpp(38): warning C4244: "argument" : konwersja z "unsigned int" do "float", możliwa utrata danych
+  GameplayState.cpp
+c:\users\thogrim\documents\visual studio 2013\projects\game\radar\states\gameplaystate.cpp(33): warning C4244: "argument" : konwersja z "unsigned int" do "float", możliwa utrata danych
+  StateManager.cpp
+c:\users\thogrim\documents\visual studio 2013\projects\game\radar\statemanager.cpp(13): warning C4244: "argument" : konwersja z "unsigned int" do "float", możliwa utrata danych
+  Application.cpp
+c:\users\thogrim\documents\visual studio 2013\projects\game\radar\application.cpp(22): warning C4244: "argument" : konwersja z "float" do "unsigned int", możliwa utrata danych
+c:\users\thogrim\documents\visual studio 2013\projects\game\radar\application.cpp(31): warning C4244: "argument" : konwersja z "int" do "float", możliwa utrata danych
+c:\users\thogrim\documents\visual studio 2013\projects\game\radar\application.cpp(34): warning C4244: "argument" : konwersja z "unsigned int" do "float", możliwa utrata danych
+  Generowanie kodu...
+  Pomijanie... (nie wykryto odpowiednich zmian)
+  SpriteEntity.cpp
+  ShapeEntity.cpp
+  Plane.cpp
+  Mountain.cpp
+  Mist.cpp
+  Entity.cpp
+  Bonus.cpp
   Radar.vcxproj -> C:\Users\Thogrim\Documents\Visual Studio 2013\Projects\Game\Debug\Radar.exe

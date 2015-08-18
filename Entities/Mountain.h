@@ -10,4 +10,6 @@ public:
 	~Mountain();
 
 	void update(const sf::Time& dt);
+
+	void accept(Visitor& c);
 };

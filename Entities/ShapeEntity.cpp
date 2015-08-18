@@ -71,6 +71,10 @@ void ShapeEntity::setVertices(const Vertices& vertices){
 	shape_.setTextureRect(static_cast<sf::IntRect>(bounds_));
 }
 
+const sf::FloatRect& ShapeEntity::getBounds() const{
+	return bounds_;
+}
+
 void ShapeEntity::draw(sf::RenderTarget& target, sf::RenderStates states) const{
 	states.transform *= getTransform();
 	target.draw(shape_, states);

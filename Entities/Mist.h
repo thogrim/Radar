@@ -7,5 +7,7 @@ public:
 	Mist(const sf::Texture& texture, const Vertices& vertices);
 	Mist(const sf::Texture& texture);
 	~Mist();
+
+	void accept(Visitor& c);
 };
 

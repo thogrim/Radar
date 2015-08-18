@@ -227,13 +227,26 @@ void World::hover(const sf::Vector2i& mousePos){
 	}
 }
 
+void World::checkCollisions(){
+	for (Plane* p : planes_){
+		Collider c(*p);
+		for (Entity* e : entities_){
+			e->accept(c);
+		}
+	}
+}
+
 void World::update(const sf::Time& dt){
+	//update entities
 	for (Plane* p : planes_){
 		p->update(dt);
 	}
 	for (Entity* e : entities_){
 		e->update(dt);
 	}
+
+	//check collisions
+	checkCollisions();
 
 	//update timer and spawn new entities
 	timer_ += dt;

@@ -1,7 +1,6 @@
 /*
 	TODO:
 	1.in setDestination method check if it is possible to reach destination
-	2.change selection sprite to primitive
 */
 #pragma once
 
@@ -44,4 +43,6 @@ public:
 	void setDestination(const sf::Vector2i& destination);
 	void update(const sf::Time& dt);
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+
+	void accept(Visitor& c);
 };

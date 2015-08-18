@@ -16,3 +16,7 @@ Mist::Mist(const sf::Texture& texture)
 
 Mist::~Mist(){
 }
+
+void Mist::accept(Visitor& c){
+	c.visit(*this);
+}

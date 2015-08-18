@@ -114,3 +114,8 @@ void Plane::draw(sf::RenderTarget& target, sf::RenderStates states) const{
 	if (selected_ || hovered_)
 		target.draw(selection_, states);
 }
+
+void Plane::accept(Visitor& c){
+	//do nothing
+	//c.visit(*this);
+}

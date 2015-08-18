@@ -6,6 +6,7 @@
 #include "Entities/Mountain.h"
 #include "Entities/Mist.h"
 #include "Entities/Bonus.h"
+#include "Collider.h"
 #include <fstream>
 #include <regex>
 #include <iostream>
@@ -45,7 +46,7 @@ private:
 	void loadShapeAttributes(ShapeEntity* shapeEntity, std::ifstream& file);
 	void loadBonusAttributes(Bonus* bonus, std::ifstream& file);
 
-	//void collide(Plane&, Entity&);
+	void checkCollisions();
 public:
 	World(ResourceHolder<sf::Texture>& textures, ResourceHolder<sf::Font>& fonts);
 	~World();

@@ -15,5 +15,7 @@ public:
 	void centerOrigin();
 
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+
+	//virtual void accept(Visitor& c) = 0;
 };
 

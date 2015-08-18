@@ -20,3 +20,7 @@ Mountain::~Mountain(){
 void Mountain::update(const sf::Time& dt){
 	//do nothing
 }
+
+void Mountain::accept(Visitor& c){
+	c.visit(*this);
+}

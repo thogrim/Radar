@@ -46,3 +46,7 @@ void Bonus::draw(sf::RenderTarget& target, sf::RenderStates states) const{
 	target.draw(sprite_, states);
 	target.draw(score_, states);
 }
+
+void Bonus::accept(Visitor& c){
+	c.visit(*this);
+}

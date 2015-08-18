@@ -17,5 +17,7 @@ public:
 
 	void update(const sf::Time& dt);
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+
+	void accept(Visitor& c);
 };
 

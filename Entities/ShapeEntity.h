@@ -23,6 +23,10 @@ public:
 	void setTexture(const sf::Texture& texture);
 	void setVertices(const Vertices& vertices);
 
+	const sf::FloatRect& getBounds() const;
+
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 	//virtual void update(const sf::Time& dt);
+
+	//virtual void accept(Visitor& c) = 0;
 };
