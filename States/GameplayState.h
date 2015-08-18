@@ -10,7 +10,7 @@ class GameplayState: public State{
 private:
 	GUI::Button menuButton_;
 	World world_;
-	Mountain mountain_;
+	//Mountain mountain_;
 public:
 	GameplayState(ChangeableContainer<State>* stateManager, sf::RenderWindow& window);
 	GameplayState(const Context& context);

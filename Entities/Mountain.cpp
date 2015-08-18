@@ -1,11 +1,5 @@
 #include "Mountain.h"
 
-//Mountain::Mountain(const ResourceHolder<sf::Texture>& textures, const Vertices& vertices)
-//	:ShapeEntity(vertices){
-//	//set Texture here
-//	shape_.setTexture(textures.get());
-//}
-
 Mountain::Mountain(const Vertices& vertices)
 	:ShapeEntity(vertices){
 	shape_.setFillColor(sf::Color(195, 195, 195));

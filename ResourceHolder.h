@@ -16,7 +16,7 @@ public:
 
 	void load(const std::string& key, const std::string& filename);
 	const Resource& get(const std::string& key) const;
-	//Resource& get(const std::string& key); non-const version - not sure if needed
+	Resource& get(const std::string& key); //non-const version - not sure if needed
 };
 
 template<typename Resource>
@@ -40,6 +40,13 @@ void ResourceHolder<Resource>::load(const std::string& key, const std::string& f
 
 template<typename Resource>
 const Resource& ResourceHolder<Resource>::get(const std::string& key) const{
+	auto found = resourceHolder_.find(key);
+	assert(found != resourceHolder_.end());
+	return *found->second;
+}
+
+template<typename Resource>
+Resource& ResourceHolder<Resource>::get(const std::string& key){
 	auto found = resourceHolder_.find(key);
 	assert(found != resourceHolder_.end());
 	return *found->second;

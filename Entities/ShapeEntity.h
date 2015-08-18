@@ -20,6 +20,7 @@ public:
 	ShapeEntity();
 	virtual ~ShapeEntity();
 
+	void setTexture(const sf::Texture& texture);
 	void setVertices(const Vertices& vertices);
 
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;

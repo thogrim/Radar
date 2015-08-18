@@ -17,8 +17,7 @@ SpriteEntity::~SpriteEntity(){
 }
 
 void SpriteEntity::setTexture(const sf::Texture& texture){
-	sprite_.setTexture(texture);
-	sprite_.setTextureRect(sf::IntRect(0, 0, texture.getSize().x, texture.getSize().y));
+	sprite_.setTexture(texture,true);
 }
 
 void SpriteEntity::centerOrigin(){

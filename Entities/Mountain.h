@@ -9,5 +9,5 @@ public:
 	Mountain();
 	~Mountain();
 
-	void update(const sf::Time&dt);
+	void update(const sf::Time& dt);
 };

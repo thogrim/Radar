@@ -56,6 +56,10 @@ void ShapeEntity::adjustBounds(){
 	bounds_ = sf::FloatRect(xmin, ymin, xmax - xmin, ymax - ymin);
 }
 
+void ShapeEntity::setTexture(const sf::Texture& texture){
+	shape_.setTexture(&texture,true);
+}
+
 void ShapeEntity::setVertices(const Vertices& vertices){
 	shape_.setPointCount(vertices.size());
 	int i = 0;
@@ -64,6 +68,7 @@ void ShapeEntity::setVertices(const Vertices& vertices){
 		++i;
 	}
 	adjustBounds();
+	shape_.setTextureRect(static_cast<sf::IntRect>(bounds_));
 }
 
 void ShapeEntity::draw(sf::RenderTarget& target, sf::RenderStates states) const{

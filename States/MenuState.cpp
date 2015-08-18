@@ -48,6 +48,7 @@ void MenuState::init(){
 	button1->setPosition(50, 50);
 	button1->setAction([this](){
 		context_.stateManager_->change(new TitleState(context_));
+
 	});
 	label_.attachComponent(std::move(button1));
 	//adding 2nd button

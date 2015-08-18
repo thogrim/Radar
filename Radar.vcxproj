@@ -71,6 +71,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="Entities\Bonus.cpp" />
     <ClCompile Include="GUI\Button.cpp" />
     <ClCompile Include="GUI\CheckBox.cpp" />
     <ClCompile Include="GUI\Component.cpp" />
@@ -79,6 +80,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Entities\Plane.cpp" />
     <ClCompile Include="Entities\Mountain.cpp" />
+    <ClCompile Include="Entities\Mist.cpp" />
     <ClCompile Include="SceneNode.cpp" />
     <ClCompile Include="Entities\ShapeEntity.cpp" />
     <ClCompile Include="Entities\SpriteEntity.cpp" />
@@ -92,6 +94,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
+    <ClInclude Include="Entities\Bonus.h" />
     <ClInclude Include="Entities\Selectable.h" />
     <ClInclude Include="GUI\Button.h" />
     <ClInclude Include="ChangeableContainer.h" />
@@ -101,6 +104,7 @@
     <ClInclude Include="GUI\Label.h" />
     <ClInclude Include="Entities\Plane.h" />
     <ClInclude Include="Entities\Mountain.h" />
+    <ClInclude Include="Entities\Mist.h" />
     <ClInclude Include="ResourceHolder.h" />
     <ClInclude Include="SceneNode.h" />
     <ClInclude Include="Entities\ShapeEntity.h" />
