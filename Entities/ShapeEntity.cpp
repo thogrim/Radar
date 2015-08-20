@@ -17,7 +17,8 @@ ShapeEntity::ShapeEntity(const sf::Vector2f& velocity, const sf::Vector2f& accel
 	:Entity(velocity,acceleration,maxVelocity,accValues),
 	shape_(),
 	bounds_(){
-	setVertices(vertices);
+	if (vertices.size()>0)
+		setVertices(vertices);
 }
 
 ShapeEntity::ShapeEntity(float vx, float vy, float ax, float ay, float maxVx, float maxVy, float accValueX, float accValueY, const Vertices& vertices)
@@ -29,9 +30,11 @@ ShapeEntity::ShapeEntity(const Vertices& vertices)
 }
 
 ShapeEntity::ShapeEntity()
-	: Entity(0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f),
-	shape_(),
-	bounds_(){
+	: ShapeEntity(Vertices())
+	//Entity(0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f),
+	//shape_(),
+	//bounds_()
+{
 }
 
 ShapeEntity::~ShapeEntity(){
@@ -64,7 +67,7 @@ void ShapeEntity::setVertices(const Vertices& vertices){
 	shape_.setPointCount(vertices.size());
 	int i = 0;
 	for (auto& v : vertices){
-		shape_.setPoint(i, sf::Vector2f(v.first, v.second));
+		shape_.setPoint(i, sf::Vector2f(v.x, v.y));
 		++i;
 	}
 	adjustBounds();
@@ -75,9 +78,21 @@ const sf::FloatRect& ShapeEntity::getBounds() const{
 	return bounds_;
 }
 
+const sf::ConvexShape& ShapeEntity::getShape() const{
+	return shape_;
+}
+
 void ShapeEntity::draw(sf::RenderTarget& target, sf::RenderStates states) const{
 	states.transform *= getTransform();
 	target.draw(shape_, states);
+	//drawing bounds
+	sf::RectangleShape bounds(sf::Vector2f(bounds_.width, bounds_.height));
+	bounds.setPosition(bounds_.left, bounds_.top);
+	bounds.setOutlineColor(sf::Color(255, 0, 255));
+	bounds.setFillColor(sf::Color::Transparent);
+	bounds.setOutlineThickness(-2);
+	target.draw(bounds, states);
+	//
 }
 
 //void ShapeEntity::update(const sf::Time& dt){

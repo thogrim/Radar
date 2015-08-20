@@ -9,6 +9,7 @@
 class GameplayState: public State{
 private:
 	GUI::Button menuButton_;
+	GUI::Button printButton_;
 	World world_;
 	//Mountain mountain_;
 public:

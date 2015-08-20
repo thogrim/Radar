@@ -2,6 +2,8 @@
 
 const std::string World::SLOW_PLANE_ID_ = "SlowPlane:";
 const std::string World::FAST_PLANE_ID_ = "FastPlane:";
+const std::string World::SUPER_FAST_PLANE_ID_ = "SuperFastPlane:";
+const std::string World::DEBUG_ENTITY_ID_ = "DebugEntity:";
 const std::string World::MOUNTAIN_ID_ = "Mountain:";
 const std::string World::MIST_ID_ = "Mist:";
 const std::string World::BONUS_ID_ = "Bonus:";
@@ -83,7 +85,7 @@ void World::loadShapeAttributes(ShapeEntity* shapeEntity, std::ifstream& file){
 		if (std::regex_search(line, matches, VERTEX_)){
 			std::string x = matches[1];
 			std::string y = matches[2];
-			vertices.push_back(std::make_pair(std::stof(x), std::stof(y)));
+			vertices.push_back(sf::Vector2f(std::stof(x), std::stof(y)));
 		}
 		else if (std::regex_search(line, matches, VELOCITY_)){
 			std::string vx = matches[1];
@@ -100,11 +102,17 @@ void World::loadShapeAttributes(ShapeEntity* shapeEntity, std::ifstream& file){
 		}
 		std::getline(file, line);
 	}
-	shapeEntity->setVertices(vertices);
-	if (time > 0)
-		pendingEntities_.push(std::make_pair(std::move(shapeEntity), time));
+	if (vertices.size() > 2){
+		if (vertices[0].x*vertices[1].y - vertices[1].x*vertices[0].y > 0)
+			std::reverse(vertices.begin(), vertices.end());
+		shapeEntity->setVertices(vertices);
+		if (time > 0)
+			pendingEntities_.push(std::make_pair(std::move(shapeEntity), time));
+		else
+			entities_.push_back(shapeEntity);
+	}
 	else
-		entities_.push_back(shapeEntity);
+		std::cout << "Error! Shape contains less than 3 vertices and it will not be put into the game\n";
 }
 
 void World::loadBonusAttributes(Bonus* bonus, std::ifstream& file){
@@ -165,6 +173,21 @@ void World::init(const std::string& filename){
 			plane->setHitboxRadius(35.f);
 			loadPlaneAttributes(plane,file);
 		}
+		else if (line == SUPER_FAST_PLANE_ID_){
+			//std::unique_ptr<Plane> plane(new Plane(textures_.get("fastplane")));
+			Plane* plane = new Plane(textures_.get("superfastplane"));
+			plane->setVelocity(0.f, 40.f);
+			plane->setMaxVelocity(200.f, 300.f);
+			plane->setHitboxRadius(35.f);
+			loadPlaneAttributes(plane, file);
+		}
+		else if (line == DEBUG_ENTITY_ID_){
+			Plane* debug = new DebugEntity(textures_.get("debug"));
+			debug->setVelocity(0.f, 0.f);
+			debug->setMaxVelocity(100.f, 0.f);
+			debug->setHitboxRadius(15.f);
+			loadPlaneAttributes(debug, file);
+		}
 		else if (line == MOUNTAIN_ID_){
 			//std::unique_ptr<ShapeEntity> mountain(new Mountain());
 			Mountain* mountain = new Mountain();
@@ -184,7 +207,7 @@ void World::init(const std::string& filename){
 			std::cout << "Error! Unrecognized entity: " << line << std::endl;
 		}
 	}
-		
+	
 }
 
 sf::Time World::getTimer() const{
@@ -259,10 +282,10 @@ void World::update(const sf::Time& dt){
 }
 
 void World::draw(sf::RenderTarget& target, sf::RenderStates states) const{
-	for (const Plane* p : planes_){
-		p->draw(target, states);
-	}
 	for (const Entity* e : entities_){
 		e->draw(target, states);
+	}
+	for (const Plane* p : planes_){
+		p->draw(target, states);
 	}
 }

@@ -33,6 +33,11 @@ void Plane::setHitboxRadius(float radius){
 	selection_.setOrigin(sf::Vector2f(radius, radius));
 }
 
+const float Plane::getHitboxRadius() const{
+	return hitboxRadius_;
+}
+
+
 bool Plane::selected() const{
 	return selected_;
 }
@@ -63,8 +68,7 @@ void Plane::unselect(){
 float Plane::countAngleDifferrence(){
 	float angle1 = 180.f + atan2(destination_.y - getPosition().y, destination_.x - getPosition().x)*180.f / PI;
 	angle1 < 90.f ? angle1 += 270.f : angle1 -= 90.f;
-	float angle2 = angle1 - getRotation();
-	return angle2;
+	return angle1 - getRotation();
 }
 
 void Plane::setDestination(const sf::Vector2i& destination){

@@ -12,7 +12,7 @@ protected:
 
 	void adjustBounds();//adjusts bounds to shape
 public:
-	typedef std::vector<std::pair<float, float>> Vertices;
+	typedef std::vector<sf::Vector2f> Vertices;
 
 	ShapeEntity(const sf::Vector2f& velocity, const sf::Vector2f& acceleration, const sf::Vector2f& maxVelocity, const sf::Vector2f& accValues, const Vertices& vertices);
 	ShapeEntity(float vx, float vy, float ax, float ay, float maxVx, float maxVy, float accValueX, float accValueY, const Vertices& vertices);
@@ -24,6 +24,7 @@ public:
 	void setVertices(const Vertices& vertices);
 
 	const sf::FloatRect& getBounds() const;
+	const sf::ConvexShape& getShape() const;
 
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 	//virtual void update(const sf::Time& dt);

@@ -8,10 +8,10 @@ Mountain::Mountain(const Vertices& vertices)
 }
 
 Mountain::Mountain()
-	:ShapeEntity(){
-	shape_.setFillColor(sf::Color(195, 195, 195));
-	shape_.setOutlineThickness(-5);
-	shape_.setOutlineColor(sf::Color(127, 127, 127));
+	:Mountain(Vertices()){
+	//shape_.setFillColor(sf::Color(195, 195, 195));
+	//shape_.setOutlineThickness(-5);
+	//shape_.setOutlineColor(sf::Color(127, 127, 127));
 }
 
 Mountain::~Mountain(){

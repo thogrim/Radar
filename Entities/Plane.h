@@ -31,6 +31,7 @@ public:
 	~Plane();
 
 	void setHitboxRadius(float radius);
+	const float getHitboxRadius() const;
 
 	//Selectable
 	bool selected() const;
@@ -40,7 +41,7 @@ public:
 	void unselect();
 
 	//
-	void setDestination(const sf::Vector2i& destination);
+	virtual void setDestination(const sf::Vector2i& destination);
 	void update(const sf::Time& dt);
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 

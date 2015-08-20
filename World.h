@@ -6,6 +6,7 @@
 #include "Entities/Mountain.h"
 #include "Entities/Mist.h"
 #include "Entities/Bonus.h"
+#include "Entities/DebugEntity.h"
 #include "Collider.h"
 #include <fstream>
 #include <regex>
@@ -18,6 +19,8 @@ private:
 	//identifiers for reading files
 	static const std::string SLOW_PLANE_ID_;
 	static const std::string FAST_PLANE_ID_;
+	static const std::string SUPER_FAST_PLANE_ID_;
+	static const std::string DEBUG_ENTITY_ID_;
 	static const std::string MOUNTAIN_ID_;
 	static const std::string MIST_ID_;
 	static const std::string BONUS_ID_;
