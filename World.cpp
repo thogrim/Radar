@@ -7,10 +7,10 @@ const std::string World::DEBUG_ENTITY_ID_ = "DebugEntity:";
 const std::string World::MOUNTAIN_ID_ = "Mountain:";
 const std::string World::MIST_ID_ = "Mist:";
 const std::string World::BONUS_ID_ = "Bonus:";
-const std::regex World::POSITION_ = std::regex("position:([[:d:]]+),([[:d:]]+)");
-const std::regex World::ROTATION_ = std::regex("rotation:([[:d:]]+)");
-const std::regex World::VELOCITY_ = std::regex("velocity:([[:d:]]+),([[:d:]]+)");
-const std::regex World::VERTEX_ = std::regex("([[:d:]]+),([[:d:]]+)");
+const std::regex World::POSITION_ = std::regex("position:(-?[[:d:]]+),(-?[[:d:]]+)");
+const std::regex World::ROTATION_ = std::regex("rotation:(-?[[:d:]]+)");
+const std::regex World::VELOCITY_ = std::regex("velocity:(-?[[:d:]]+),(-?[[:d:]]+)");
+const std::regex World::VERTEX_ = std::regex("vertex:(-?[[:d:]]+),(-?[[:d:]]+)");
 const std::regex World::SCORE_ = std::regex("score:([[:d:]]+)");
 const std::regex World::LIFETIME_ = std::regex("lifetime:([[:d:]]+)");
 const std::regex World::TIME_ = std::regex("time:([[:d:]]+)");
@@ -23,6 +23,7 @@ World::World(ResourceHolder<sf::Texture>& textures, ResourceHolder<sf::Font>& fo
 	entities_(),
 	selectedPlane_(nullptr),
 	hoveredPlane_(nullptr),
+	drawDestinations(false),
 	timer_(sf::Time::Zero),
 	pendingPlanes_(),
 	pendingEntities_(){
@@ -236,9 +237,9 @@ void World::setPlaneDestination(const sf::Vector2i& mousePos) {
 		selectedPlane_->setDestination(mousePos);
 }
 
-//void World::updateDebug(){
-//
-//}
+void World::setDrawingDestinations(){
+	drawDestinations = !drawDestinations;
+}
 
 void World::hover(const sf::Vector2i& mousePos){
 	for (auto& p : planes_){
@@ -281,10 +282,18 @@ void World::update(const sf::Time& dt){
 	}
 }
 
+void World::drawPlanesDestinations(sf::RenderTarget& target) const{
+	for (const Plane* p : planes_){
+		p->drawDestination(target);
+	}
+}
+
 void World::draw(sf::RenderTarget& target, sf::RenderStates states) const{
 	for (const Entity* e : entities_){
 		e->draw(target, states);
 	}
+	if (drawDestinations)
+		drawPlanesDestinations(target);
 	for (const Plane* p : planes_){
 		p->draw(target, states);
 	}

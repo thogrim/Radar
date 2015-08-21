@@ -40,6 +40,7 @@ private:
 	std::list<Entity*> entities_;
 	Plane* selectedPlane_;
 	Plane* hoveredPlane_;
+	bool drawDestinations;
 		
 	sf::Time timer_;
 	std::queue<std::pair<Plane*,float>> pendingPlanes_;
@@ -50,6 +51,7 @@ private:
 	void loadBonusAttributes(Bonus* bonus, std::ifstream& file);
 
 	void checkCollisions();
+	void drawPlanesDestinations(sf::RenderTarget& target) const;
 public:
 	World(ResourceHolder<sf::Texture>& textures, ResourceHolder<sf::Font>& fonts);
 	~World();
@@ -59,10 +61,8 @@ public:
 	void init(const std::string& filename);
 	bool press();
 	void setPlaneDestination(const sf::Vector2i& mousePos);
+	void setDrawingDestinations();
 	void hover(const sf::Vector2i& mousePos);
-	//void updateDebug();
 	void update(const sf::Time& dt);
-	//void renderDebug() const;
-	//void render() const;
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };

@@ -3,19 +3,19 @@
 Mist::Mist(const sf::Texture& texture, const Vertices& vertices)
 	:ShapeEntity(vertices){
 	setTexture(texture);
-	//shape_.setOutlineThickness(-5);
-	//shape_.setOutlineColor(sf::Color(127, 127, 127));
 }
 
 Mist::Mist(const sf::Texture& texture)
 	:Mist(texture,Vertices()){
-	//setTexture(texture);
-	//shape_.setOutlineThickness(-5);
-	//shape_.setOutlineColor(sf::Color(127, 127, 127));
 }
 
 Mist::~Mist(){
 }
+
+void Mist::update(const sf::Time& dt){
+	move(velocity_*dt.asSeconds());
+}
+
 
 void Mist::accept(Visitor& c){
 	c.visit(*this);

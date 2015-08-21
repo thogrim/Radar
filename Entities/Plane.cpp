@@ -84,18 +84,21 @@ void Plane::setDestination(const sf::Vector2i& destination){
 }
 
 void Plane::update(const sf::Time& dt){
-	if (hasDestination_){
-		float angleDifference = abs(countAngleDifferrence());
-		if (angleDifference < 1.f){
+	if (hasDestination_ && velocity_.y!=0.f){
+		float angleDifference = countAngleDifferrence();
+		if (abs(angleDifference) < 1.f){
+			rotate(angleDifference);
 			velocity_.y = 0.f;
-			hasDestination_ = false;
+			//hasDestination_ = false;
 		}
 	}
 
 	//stop moving when destination is reached
 	if (abs((getPosition() - destination_).x) < 5.f &&
-		abs((getPosition() - destination_).y) < 5.f)
+		abs((getPosition() - destination_).y) < 5.f){
 		setVelocity(0.f, 0.f);
+		hasDestination_ = false;
+	}
 
 	//calculate offset
 	float angle = -getRotation() +90.f;
@@ -112,7 +115,31 @@ void Plane::update(const sf::Time& dt){
 		selection_.setOutlineColor(sf::Color(217, 255, 0));
 }
 
+void Plane::drawDestination(sf::RenderTarget& target/*, sf::RenderStates states*/) const{
+	if (hasDestination_){
+		sf::Vertex line[] = {
+			sf::Vertex(getPosition()),
+			sf::Vertex(destination_)
+		};
+		float crossSize = 15;
+		sf::Vertex cross1[] = {
+			sf::Vertex(destination_ - sf::Vector2f(crossSize, crossSize)),
+			sf::Vertex(destination_ + sf::Vector2f(crossSize, crossSize))
+		};
+		sf::Vertex cross2[] = {
+			sf::Vertex(destination_ - sf::Vector2f(crossSize, -crossSize)),
+			sf::Vertex(destination_ + sf::Vector2f(crossSize, -crossSize))
+		};
+		target.draw(line, 2, sf::Lines);
+		target.draw(cross1, 2, sf::Lines);
+		target.draw(cross2, 2, sf::Lines);
+	}
+}
+
 void Plane::draw(sf::RenderTarget& target, sf::RenderStates states) const{
+	//drawing destination
+	if (selected_)
+		drawDestination(target/*, states*/);
 	states.transform *= getTransform();
 	target.draw(sprite_, states);
 	if (selected_ || hovered_)

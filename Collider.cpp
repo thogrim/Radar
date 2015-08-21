@@ -60,15 +60,15 @@ bool Collider::checkShapeCollision(const sf::ConvexShape& shape){
 	return false;
 }
 
-bool Collider::planeInShape(const sf::ConvexShape& shape){
+bool Collider::planeInShape(const sf::ConvexShape& shape, const sf::Vector2f& shapePos){
 	sf::Vector2f pos(plane_.getPosition());
 	sf::Vector2f p0;
 	sf::Vector2f p1;
 	unsigned int i = 0;
 	float a, b, c;
 	while (i < shape.getPointCount() - 1){
-		p0 = shape.getPoint(i);
-		p1 = shape.getPoint(i + 1);
+		p0 = shape.getPoint(i) + shapePos;
+		p1 = shape.getPoint(i + 1) + shapePos;
 		++i;
 		a = p0.y - p1.y;
 		b = p1.x - p0.x;
@@ -78,8 +78,8 @@ bool Collider::planeInShape(const sf::ConvexShape& shape){
 
 	}
 	//checking last wall
-	p0 = shape.getPoint(i);
-	p1 = shape.getPoint(0);
+	p0 = shape.getPoint(i) + shapePos;
+	p1 = shape.getPoint(0) + shapePos;
 	a = p0.y - p1.y;
 	b = p1.x - p0.x;
 	c = p1.y*p0.x - p1.x*p0.y;
@@ -104,9 +104,12 @@ void Collider::visit(Mountain& mountain){
 }
 
 void Collider::visit(Mist& mist){
-	if (mist.getBounds().contains(plane_.getPosition()))
-		if (planeInShape(mist.getShape())){
-			std::cout << "mist contains plane\n";
+	sf::FloatRect bounds(mist.getBounds());
+	bounds.left += mist.getPosition().x;
+	bounds.top += mist.getPosition().y;
+	if (bounds.contains(plane_.getPosition()))
+		if (planeInShape(mist.getShape(),mist.getPosition())){
+			//std::cout << "mist contains plane\n";
 		}
 }
 

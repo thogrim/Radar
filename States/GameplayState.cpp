@@ -48,6 +48,11 @@ void GameplayState::init(){
 
 void GameplayState::processEvents(const sf::Event& ev){
 	switch (ev.type){
+	case sf::Event::KeyPressed:
+		if (ev.key.code == sf::Keyboard::D){
+			world_.setDrawingDestinations();
+		}
+		break;
 	case sf::Event::MouseButtonPressed:
 		if (ev.mouseButton.button == sf::Mouse::Left){
 			menuButton_.press();

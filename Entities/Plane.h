@@ -43,6 +43,7 @@ public:
 	//
 	virtual void setDestination(const sf::Vector2i& destination);
 	void update(const sf::Time& dt);
+	void drawDestination(sf::RenderTarget& target/*, sf::RenderStates states*/) const;
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
 	void accept(Visitor& c);

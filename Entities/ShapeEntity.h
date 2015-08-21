@@ -27,7 +27,4 @@ public:
 	const sf::ConvexShape& getShape() const;
 
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
-	//virtual void update(const sf::Time& dt);
-
-	//virtual void accept(Visitor& c) = 0;
 };

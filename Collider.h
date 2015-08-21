@@ -10,7 +10,7 @@
 struct Collider: public Visitor{
 private:
 	bool checkShapeCollision(const sf::ConvexShape& shape);
-	bool planeInShape(const sf::ConvexShape& shape);
+	bool planeInShape(const sf::ConvexShape& shape, const sf::Vector2f& shapePos);
 	Plane& plane_;
 public:
 	Collider(Plane& plane);
