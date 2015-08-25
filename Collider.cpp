@@ -99,7 +99,9 @@ void Collider::visit(Mountain& mountain){
 	if (bounds.contains(plane_.getPosition()))
 		if (checkShapeCollision(mountain.getShape())){
 			//plane_.rotate(180);
-			plane_.setPosition(200.f, 200.f);
+			//plane_.setPosition(200.f, 200.f);
+			plane_.destroy();
+
 		}
 }
 
@@ -107,14 +109,23 @@ void Collider::visit(Mist& mist){
 	sf::FloatRect bounds(mist.getBounds());
 	bounds.left += mist.getPosition().x;
 	bounds.top += mist.getPosition().y;
-	if (bounds.contains(plane_.getPosition()))
-		if (planeInShape(mist.getShape(),mist.getPosition())){
-			//std::cout << "mist contains plane\n";
-		}
+	if (bounds.contains(plane_.getPosition())){
+		if (planeInShape(mist.getShape(), mist.getPosition()))
+			plane_.setVisibility(false);
+		else
+			plane_.setVisibility(true);
+	}
+	else
+		plane_.setVisibility(true);
 }
 
 void Collider::visit(Bonus& bonus){
-
+	sf::Vector2f ppos(plane_.getPosition());
+	sf::Vector2f bpos(bonus.getPosition());
+	if (sqrt(pow(ppos.x - bpos.x, 2) + pow(ppos.y - bpos.y, 2)) < plane_.getHitboxRadius()){
+		plane_.collectPoints(bonus.getScore());
+		bonus.destroy();
+	}
 }
 
 void Collider::visit(Plane& plane){

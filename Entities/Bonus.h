@@ -6,6 +6,7 @@ class Bonus: public SpriteEntity{
 private:
 	sf::Text score_;
 	sf::Time lifetime_;
+	sf::Time timePassed_;
 public:
 	//Bonus(const sf::Texture& texture, int score);
 	Bonus(const sf::Texture& texture, const sf::Font& font);

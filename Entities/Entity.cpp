@@ -6,7 +6,8 @@ Entity::Entity(/*const sf::Texture& texture, */const sf::Vector2f& velocity, con
 	velocity_(velocity),
 	acceleration_(acceleration),
 	maxVelocity_(sf::Vector2f(abs(maxVelocity.x), abs(maxVelocity.y))),
-	accValues_(accValues){
+	accValues_(accValues),
+	toDestroy_(false){
 	//sprite_.setTexture(texture);
 }
 
@@ -32,6 +33,7 @@ Entity::Entity()
 //}
 
 Entity::~Entity(){
+	std::cout << "entity destroyed\n";
 }
 
 //void Entity::create(const sf::Texture& texture, const sf::Vector2f& velocity, const sf::Vector2f& acceleration, const sf::Vector2f& maxVelocity, const sf::Vector2f& accValues){
@@ -108,6 +110,14 @@ void Entity::adjustVelocity(){
 		velocity_.x = -maxVelocity_.x;
 	if (velocity_.y < -maxVelocity_.y)
 		velocity_.y = -maxVelocity_.y;
+}
+
+bool Entity::toDestroy() const{
+	return toDestroy_;
+}
+
+void Entity::destroy(){
+	toDestroy_ = true;
 }
 
 void Entity::update(const sf::Time& dt){

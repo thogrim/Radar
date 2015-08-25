@@ -36,11 +36,14 @@ private:
 private:
 	ResourceHolder<sf::Texture>& textures_;
 	ResourceHolder<sf::Font>& fonts_;
+
 	std::list<Plane*> planes_;
 	std::list<Entity*> entities_;
 	Plane* selectedPlane_;
 	Plane* hoveredPlane_;
 	bool drawDestinations;
+	float score_;
+	sf::Text HUDtext_;
 		
 	sf::Time timer_;
 	std::queue<std::pair<Plane*,float>> pendingPlanes_;

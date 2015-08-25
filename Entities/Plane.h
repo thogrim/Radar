@@ -1,6 +1,6 @@
 /*
 	TODO:
-	1.in setDestination method check if it is possible to reach destination
+	1.in setDestination method check if it is possible to reach destination?
 */
 #pragma once
 
@@ -19,19 +19,33 @@ protected:
 	bool hovered_;
 	bool selected_;
 	bool hasDestination_;
-	sf::Vector2f destination_;
+	sf::Vector2f tempDestination_;
 	sf::CircleShape selection_;
 	float hitboxRadius_;
+	bool visible_;
+	sf::Vector2f endDestination_;
+	bool reachedDestination_;
+	float collectedPoints_;
+	sf::Time lifetime_;
+	sf::Time timePassed_;
 
 	float countAngleDifferrence();
+	void drawFuel(sf::RenderTarget& target) const;
 public:
 	Plane(const sf::Vector2f& velocity, float hitboxRadius, const sf::Texture& texture);
 	Plane(float vx, float vy, float hitboxRadius, const sf::Texture& texture);
 	Plane(const sf::Texture& texture);
 	~Plane();
 
+	void setLifetime(float lifetime);
 	void setHitboxRadius(float radius);
 	const float getHitboxRadius() const;
+	void setVisibility(bool visible);
+	virtual void setTempDestination(const sf::Vector2i& destination);
+	void setEndDestination(float x, float y);
+	bool reachedDestination() const;
+	void collectPoints(float points);
+	float takePoints();
 
 	//Selectable
 	bool selected() const;
@@ -41,9 +55,9 @@ public:
 	void unselect();
 
 	//
-	virtual void setDestination(const sf::Vector2i& destination);
 	void update(const sf::Time& dt);
-	void drawDestination(sf::RenderTarget& target/*, sf::RenderStates states*/) const;
+	void drawTempDestination(sf::RenderTarget& target) const;
+	void drawEndDestination(sf::RenderTarget& target) const;
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
 	void accept(Visitor& c);

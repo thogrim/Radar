@@ -24,6 +24,8 @@ World::World(ResourceHolder<sf::Texture>& textures, ResourceHolder<sf::Font>& fo
 	selectedPlane_(nullptr),
 	hoveredPlane_(nullptr),
 	drawDestinations(false),
+	score_(0.f),
+	HUDtext_(),
 	timer_(sf::Time::Zero),
 	pendingPlanes_(),
 	pendingEntities_(){
@@ -108,7 +110,7 @@ void World::loadShapeAttributes(ShapeEntity* shapeEntity, std::ifstream& file){
 			std::reverse(vertices.begin(), vertices.end());
 		shapeEntity->setVertices(vertices);
 		if (time > 0)
-			pendingEntities_.push(std::make_pair(std::move(shapeEntity), time));
+			pendingEntities_.push(std::make_pair(shapeEntity, time));
 		else
 			entities_.push_back(shapeEntity);
 	}
@@ -145,12 +147,15 @@ void World::loadBonusAttributes(Bonus* bonus, std::ifstream& file){
 		std::getline(file, line);
 	}
 	if (time > 0)
-		pendingEntities_.push(std::make_pair(std::move(bonus), time));
+		pendingEntities_.push(std::make_pair(bonus, time));
 	else
 		entities_.push_back(bonus);
 }
 
 void World::init(const std::string& filename){
+	HUDtext_.setFont(fonts_.get("calibri"));
+	HUDtext_.setCharacterSize(20);
+	HUDtext_.setPosition(600, 0);
 	std::ifstream file(filename);
 	if (!file.good()){
 		std::cout << "could not open file: " << filename << std::endl;
@@ -164,6 +169,7 @@ void World::init(const std::string& filename){
 			plane->setVelocity(0.f, 20.f);
 			plane->setMaxVelocity(50.f, 40.f);
 			plane->setHitboxRadius(32.f);
+			plane->setEndDestination(300.f, 200.f);
 			loadPlaneAttributes(plane, file);
 		}
 		else if (line == FAST_PLANE_ID_){
@@ -172,6 +178,8 @@ void World::init(const std::string& filename){
 			plane->setVelocity(0.f, 40.f);
 			plane->setMaxVelocity(100.f, 100.f);
 			plane->setHitboxRadius(35.f);
+			plane->setEndDestination(200.f, 300.f);
+			plane->setLifetime(25.f);
 			loadPlaneAttributes(plane,file);
 		}
 		else if (line == SUPER_FAST_PLANE_ID_){
@@ -234,7 +242,7 @@ bool World::press(){
 
 void World::setPlaneDestination(const sf::Vector2i& mousePos) {
 	if (selectedPlane_)
-		selectedPlane_->setDestination(mousePos);
+		selectedPlane_->setTempDestination(mousePos);
 }
 
 void World::setDrawingDestinations(){
@@ -261,12 +269,45 @@ void World::checkCollisions(){
 }
 
 void World::update(const sf::Time& dt){
-	//update entities
-	for (Plane* p : planes_){
-		p->update(dt);
+	//updating planes
+	auto plane = planes_.begin();
+	while (plane != planes_.end()){
+		if ((*plane)->toDestroy()){
+			//destroy plane
+			if (*plane == selectedPlane_)
+				selectedPlane_ = nullptr;
+			delete *plane;
+			plane = planes_.erase(plane);
+		}
+		else if((*plane)->reachedDestination()){
+			//remove plane when it reached its destination
+			score_ += (*plane)->takePoints();
+			if (*plane == selectedPlane_)
+				selectedPlane_ = nullptr;
+			delete *plane;
+			plane = planes_.erase(plane);
+		}
+		else{
+			//update plane and take points
+			score_ +=(*plane)->takePoints();
+			(*plane)->update(dt);
+			++plane;
+		}
 	}
-	for (Entity* e : entities_){
-		e->update(dt);
+
+	//updating entities
+	auto entity = entities_.begin();
+	while (entity != entities_.end()){
+		if ((*entity)->toDestroy()){
+			//destroy entity
+			delete *entity;
+			entity = entities_.erase(entity);
+		}
+		else{
+			//update entity
+			(*entity)->update(dt);
+			++entity;
+		}
 	}
 
 	//check collisions
@@ -280,11 +321,20 @@ void World::update(const sf::Time& dt){
 			pendingPlanes_.pop();
 		}
 	}
+	if (!pendingEntities_.empty()){
+		if (timer_.asSeconds() > pendingEntities_.front().second){
+			entities_.push_back(pendingEntities_.front().first);
+			pendingEntities_.pop();
+		}
+	}
+
+	//update HUD
+	HUDtext_.setString("score: " + std::to_string(score_));
 }
 
 void World::drawPlanesDestinations(sf::RenderTarget& target) const{
 	for (const Plane* p : planes_){
-		p->drawDestination(target);
+		p->drawTempDestination(target);
 	}
 }
 
@@ -297,4 +347,6 @@ void World::draw(sf::RenderTarget& target, sf::RenderStates states) const{
 	for (const Plane* p : planes_){
 		p->draw(target, states);
 	}
+
+	target.draw(HUDtext_);
 }

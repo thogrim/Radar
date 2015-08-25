@@ -7,8 +7,7 @@ public:
 	DebugEntity(const sf::Texture& texture);
 	~DebugEntity();
 
-	void setDestination(const sf::Vector2i& destination);
+	void setTempDestination(const sf::Vector2i& destination);
 
 	void update(const sf::Time& dt);
 };
-

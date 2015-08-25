@@ -7,10 +7,10 @@ DebugEntity::DebugEntity(const sf::Texture& texture)
 DebugEntity::~DebugEntity(){
 }
 
-void DebugEntity::setDestination(const sf::Vector2i& destination){
+void DebugEntity::setTempDestination(const sf::Vector2i& destination){
 	hasDestination_ = true;
-	destination_ = static_cast<sf::Vector2f>(destination);
-	float angle = 180.f + atan2(destination_.y - getPosition().y, destination_.x - getPosition().x)*180.f / PI;
+	tempDestination_ = static_cast<sf::Vector2f>(destination);
+	float angle = 180.f + atan2(tempDestination_.y - getPosition().y, tempDestination_.x - getPosition().x)*180.f / PI;
 	angle < 90.f ? angle += 270.f : angle -= 90.f;
 	setRotation(angle);
 	velocity_.x = maxVelocity_.x;
@@ -24,8 +24,8 @@ void DebugEntity::update(const sf::Time& dt){
 		float vy = -velocity_.x*sin(angle*PI / 180.f);
 		move(vx*dt.asSeconds(), vy*dt.asSeconds());
 
-		if (abs((getPosition() - destination_).x) < 5.f &&
-			abs((getPosition() - destination_).y) < 5.f){
+		if (abs((getPosition() - tempDestination_).x) < 5.f &&
+			abs((getPosition() - tempDestination_).y) < 5.f){
 			velocity_.x = 0.f;
 			hasDestination_ = false;
 		}

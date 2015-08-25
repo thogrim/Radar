@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <iostream>
 #include "../Visitor.h"
 //#include "../ResourceHolder.h"
 
@@ -14,6 +15,7 @@ protected:
 	sf::Vector2f maxVelocity_;	//max velocity
 	sf::Vector2f accValues_;	//values at which entity accelerates
 
+	bool toDestroy_;
 	//virtual void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
 	//virtual void updateCurrent(const sf::Time& dt);
 	void adjustVelocity(); //adjusts velocity so it does not exceed max velocity
@@ -37,6 +39,8 @@ public:
 	void setAccelerationValues(const sf::Vector2f& accValues);
 	void setAccelerationValues(float xVal, float yVal);
 
+	bool toDestroy() const;
+	void destroy();
 	//virtual void create(const sf::Texture& texture, const sf::Vector2f& velocity, const sf::Vector2f& acceleration, const sf::Vector2f& maxVelocity, const sf::Vector2f& accValues);
 	//virtual void create(const sf::Texture& texture, float vx, float vy, float ax, float ay, float maxVx, float maxVy, float accValueX, float accValueY);
 

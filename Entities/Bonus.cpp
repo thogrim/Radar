@@ -11,7 +11,8 @@
 Bonus::Bonus(const sf::Texture& texture, const sf::Font& font)
 	: SpriteEntity(), 
 	score_(),
-	lifetime_(sf::Time::Zero){
+	lifetime_(sf::Time::Zero),
+	timePassed_(sf::Time::Zero){
 	setTexture(texture);
 	centerOrigin();
 	score_.setFont(font);
@@ -38,7 +39,11 @@ int Bonus::getScore() const{
 }
 
 void Bonus::update(const sf::Time& dt){
-	//do nothing
+	timePassed_ += dt;
+	if (timePassed_ > lifetime_)
+		toDestroy_ = true;
+	else
+		sprite_.setColor(sf::Color(255,255,255,255*(1-timePassed_/lifetime_)));
 }
 
 void Bonus::draw(sf::RenderTarget& target, sf::RenderStates states) const{
