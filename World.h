@@ -17,6 +17,7 @@
 class World: public sf::Drawable{
 private:
 	//identifiers for reading files
+	static const std::string BG_IMAGE_ID_;
 	static const std::string SLOW_PLANE_ID_;
 	static const std::string FAST_PLANE_ID_;
 	static const std::string SUPER_FAST_PLANE_ID_;
@@ -25,7 +26,9 @@ private:
 	static const std::string MIST_ID_;
 	static const std::string BONUS_ID_;
 	static const std::regex POSITION_;
+	static const std::regex BG_FILE_;
 	static const std::regex ROTATION_;
+	static const std::regex DESTINATION_;
 	static const std::regex VELOCITY_;
 	static const std::regex VERTEX_;
 	static const std::regex SCORE_;
@@ -37,6 +40,7 @@ private:
 	ResourceHolder<sf::Texture>& textures_;
 	ResourceHolder<sf::Font>& fonts_;
 
+	sf::Sprite background_;
 	std::list<Plane*> planes_;
 	std::list<Entity*> entities_;
 	Plane* selectedPlane_;

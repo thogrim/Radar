@@ -7,8 +7,9 @@
 class TitleState : public State
 {
 private:
-	const sf::Time titleDuration_;
-	sf::Time timer_;
+	/*const sf::Time titleDuration_;
+	sf::Time timer_;*/
+	sf::Text title_;
 public:
 	TitleState(ChangeableContainer<State>* stateManager, sf::RenderWindow& window);
 	TitleState(const Context& context);

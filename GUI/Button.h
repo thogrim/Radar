@@ -16,13 +16,11 @@ namespace GUI{
 
 		std::function<void()> action_;
 	public:
-		//Button(const sf::Texture& texture, const float posX, const float posY, const std::function<void()>& action, const sf::Vector2f& parentPos);
-		//Button(const sf::Texture& texture, const float posX, const float posY, const std::function<void()>& action, const float parentPosX, const float parentPosY);
-		//Button(const sf::Texture& texture, const float posX, const float posY, const std::function<void()>& action);
 		Button();
 		~Button();
 
 		void setAction(const std::function<void()>& action);
+		//void setText(const sf::Text& text);
 		bool press();
 		bool release();
 		const std::function<void()> getAction() const;

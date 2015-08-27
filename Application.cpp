@@ -38,7 +38,7 @@ Application::Application(int width, int height, const std::string& title, float 
 }
 
 
-Application::Application() : Application(800, 600, "SFML Game", 60, true) {
+Application::Application() : Application(800, 600, "SFML Game", 60, false) {
 }
 
 
@@ -107,12 +107,13 @@ void Application::updateDebug(const sf::Time& dt){
 }
 
 void Application::update(const sf::Time& dt){
-	if (!stateManager_.empty())
+	if (!stateManager_.empty()){
 		stateManager_.update(dt);
+		updateDebug(dt);
+	}
 	else
 		window_.close();
 
-	updateDebug(dt);
 }
 
 void Application::renderDebug(){
@@ -141,7 +142,7 @@ void Application::run(){
 		accumulator += clock.restart();
 		timePassed_ += accumulator;
 		++frameCounter_;
-		while (accumulator > TimePerUpdate){
+		while (accumulator > TimePerUpdate && window_.isOpen()){
 			accumulator -= TimePerUpdate;
 			processEvents();
 			update(TimePerUpdate);
@@ -150,10 +151,6 @@ void Application::run(){
 		//updating when some time is left in accumulator
 		update(accumulator);
 		++updatesCounter_;
-		
-		//if (timePassed_ > TimePerDebugUpdate){
-		//	updateDebug();
-		//}
 
 		render();
 	}

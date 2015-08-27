@@ -21,18 +21,13 @@ public:
 protected:
 	Context context_;
 	//bool active_;
-
-	//DRAWABLE STUFF
-	//Scene scene_;
-	//sf::Font font_;
 	sf::Text text_;
 	ResourceHolder<sf::Texture> textures_;
 	ResourceHolder<sf::Font> fonts_;
 	SpriteNode background_;
-
 public:
 
-	State(ChangeableContainer<State>* stateManager, sf::RenderWindow& window/*, bool& debug*/);
+	State(ChangeableContainer<State>* stateManager, sf::RenderWindow& window);
 	State(const Context& context);
 	virtual ~State();
 

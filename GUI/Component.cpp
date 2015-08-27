@@ -24,8 +24,10 @@ using namespace GUI;
 //}
 
 Component::Component(const int nSprites)
-	:hovered_(false),
+	:active_(true),
+	hovered_(false),
 	pressed_(false),
+	//text_(),
 	sprite_(),
 	nSprites_(nSprites),
 	textureRect_(0,0,0,0),
@@ -46,8 +48,43 @@ void Component::setSprite(const int nSprite){
 	sprite_.setTextureRect(sf::IntRect(0, (nSprite - 1)*textureRect_.height, textureRect_.width, textureRect_.height));
 }
 
+//void Component::setText(const std::string& string, const sf::Font font, unsigned int characterSize){
+//	text_.setString(string);
+//	text_.setFont(font);
+//	text_.setCharacterSize(characterSize);
+//}
+
+//void Component::setText(const sf::Text& text){
+//	text_ = text;
+//	text_.setPosition(parentPos_+getPosition()+text.getPosition());
+//}
+
+//void Component::setTextColor(const sf::Color& color){
+//	text_.setColor(color);
+//}
+
+//void Component::setFont(const sf::Font& font){
+//	text_.setFont(font);
+//}
+//
+//void Component::setString(const std::string& string){
+//	text_.setString(string);
+//}
+
+//void Component::setTextPosition(float x, float y){
+//	text_.setPosition(getPosition().x+x, getPosition().y+y);
+//}
+
 void Component::setParentPosition(const sf::Vector2f& parentPos){
 	parentPos_ = parentPos;
+}
+
+void Component::setActive(bool active){
+	active_ = active;
+}
+
+bool Component::isActive() const{
+	return active_;
 }
 
 bool Component::hoveredNow(const sf::Vector2i& mousePos){
@@ -69,4 +106,7 @@ bool Component::pressed() const{
 void Component::draw(sf::RenderTarget& target, sf::RenderStates states) const{
 	states.transform *= getTransform();
 	target.draw(sprite_, states);
+	//target.draw(text_);
+	/*states.transform *= text_.getTransform();
+	target.draw(text_, states);*/
 }

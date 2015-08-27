@@ -86,12 +86,12 @@ void ShapeEntity::draw(sf::RenderTarget& target, sf::RenderStates states) const{
 	states.transform *= getTransform();
 	target.draw(shape_, states);
 	//drawing bounds
-	sf::RectangleShape bounds(sf::Vector2f(bounds_.width, bounds_.height));
+	/*sf::RectangleShape bounds(sf::Vector2f(bounds_.width, bounds_.height));
 	bounds.setPosition(bounds_.left, bounds_.top);
 	bounds.setOutlineColor(sf::Color(255, 0, 255));
 	bounds.setFillColor(sf::Color::Transparent);
 	bounds.setOutlineThickness(-2);
-	target.draw(bounds, states);
+	target.draw(bounds, states);*/
 	//
 }
 

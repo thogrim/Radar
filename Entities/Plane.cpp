@@ -12,11 +12,11 @@ Plane::Plane(const sf::Vector2f& velocity, float hitboxRadius, const sf::Texture
 	endDestination_(0.f,0.f),
 	reachedDestination_(false),
 	collectedPoints_(0.f),
-	lifetime_(sf::seconds(50.f)),
+	lifetime_(sf::Time::Zero),
 	timePassed_(sf::Time::Zero){
 	setTexture(texture);
 	centerOrigin();
-	selection_.setRadius(hitboxRadius_);
+	selection_.setRadius(hitboxRadius_+5);
 	selection_.setOutlineThickness(-3);
 	selection_.setFillColor(sf::Color::Transparent);
 	selection_.setOrigin(sf::Vector2f(hitboxRadius,hitboxRadius));
@@ -39,7 +39,8 @@ void Plane::setLifetime(float lifetime){
 
 void Plane::setHitboxRadius(float radius){
 	hitboxRadius_ = radius;
-	selection_.setRadius(hitboxRadius_); 
+	radius += 5;
+	selection_.setRadius(radius); 
 	selection_.setOrigin(sf::Vector2f(radius, radius));
 }
 
@@ -140,7 +141,7 @@ void Plane::update(const sf::Time& dt){
 	//stop moving when destination is reached
 	if (abs((getPosition() - tempDestination_).x) < 5.f &&
 		abs((getPosition() - tempDestination_).y) < 5.f){
-		setVelocity(0.f, 0.f);
+		//setVelocity(0.f, 0.f);
 		hasDestination_ = false;
 	}
 
@@ -154,7 +155,7 @@ void Plane::update(const sf::Time& dt){
 
 	//selection sprite update
 	if (selected_)
-		selection_.setOutlineColor(sf::Color(43, 212, 52));
+		selection_.setOutlineColor(sf::Color(0, 94, 255));
 	else if (hovered_)
 		selection_.setOutlineColor(sf::Color(217, 255, 0));
 }

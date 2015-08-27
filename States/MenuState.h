@@ -11,7 +11,7 @@
 class MenuState : public State{
 private:
 	GUI::Label label_;
-	GUI::Button button_;
+	//GUI::Button button_;
 	//Plane plane_;
 	//Entity entity_;
 	//std::vector<std::unique_ptr<Entity>> planes_;

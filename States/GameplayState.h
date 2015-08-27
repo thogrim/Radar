@@ -2,14 +2,16 @@
 
 #include "State.h"
 #include "MenuState.h"
+#include "../GUI/Label.h"
 #include "../GUI/Button.h"
 #include "../World.h"
 #include "../Entities/Mountain.h"
 
 class GameplayState: public State{
 private:
-	GUI::Button menuButton_;
-	GUI::Button printButton_;
+	//GUI::Button menuButton_;
+	//GUI::Button printButton_;
+	GUI::Label menuLabel_;
 	World world_;
 	//Mountain mountain_;
 public:

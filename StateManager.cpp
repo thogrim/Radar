@@ -45,12 +45,15 @@ void StateManager::update(const sf::Time& dt){
 }
 
 void StateManager::renderDebug() const {
-	window_.draw(text_);
-	stateStack_.back()->renderDebug();
+	if (!stateStack_.empty()){
+		window_.draw(text_);
+		stateStack_.back()->renderDebug();
+	}
 }
 
 void StateManager::render() const{
 	//drawing state on top of stack
-	stateStack_.back()->render();
+	if (!stateStack_.empty())
+		stateStack_.back()->render();
 	//later it might need to draw multiple states
 }

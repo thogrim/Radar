@@ -1,5 +1,6 @@
 #include "World.h"
 
+const std::string World::BG_IMAGE_ID_ = "Background:";
 const std::string World::SLOW_PLANE_ID_ = "SlowPlane:";
 const std::string World::FAST_PLANE_ID_ = "FastPlane:";
 const std::string World::SUPER_FAST_PLANE_ID_ = "SuperFastPlane:";
@@ -7,8 +8,10 @@ const std::string World::DEBUG_ENTITY_ID_ = "DebugEntity:";
 const std::string World::MOUNTAIN_ID_ = "Mountain:";
 const std::string World::MIST_ID_ = "Mist:";
 const std::string World::BONUS_ID_ = "Bonus:";
+const std::regex World::BG_FILE_ = std::regex("\\w*.png");
 const std::regex World::POSITION_ = std::regex("position:(-?[[:d:]]+),(-?[[:d:]]+)");
 const std::regex World::ROTATION_ = std::regex("rotation:(-?[[:d:]]+)");
+const std::regex World::DESTINATION_ = std::regex("destination:(-?[[:d:]]+),(-?[[:d:]]+)");
 const std::regex World::VELOCITY_ = std::regex("velocity:(-?[[:d:]]+),(-?[[:d:]]+)");
 const std::regex World::VERTEX_ = std::regex("vertex:(-?[[:d:]]+),(-?[[:d:]]+)");
 const std::regex World::SCORE_ = std::regex("score:([[:d:]]+)");
@@ -19,6 +22,7 @@ const std::string World::END_ = "end";
 World::World(ResourceHolder<sf::Texture>& textures, ResourceHolder<sf::Font>& fonts)
 	:textures_(textures),
 	fonts_(fonts),
+	background_(),
 	planes_(),
 	entities_(),
 	selectedPlane_(nullptr),
@@ -66,6 +70,11 @@ void World::loadPlaneAttributes(Plane* plane, std::ifstream& file){
 		else if (std::regex_search(line, matches, TIME_)){
 			std::string t = matches[1];
 			time = std::stof(t);
+		}
+		else if (std::regex_search(line, matches, DESTINATION_)){
+			std::string x = matches[1];
+			std::string y = matches[2];
+			plane->setEndDestination(std::stof(x),std::stof(y));
 		}
 		else{
 			std::cout << "Error! Unrecognized attribute: " << line << std::endl;
@@ -155,7 +164,8 @@ void World::loadBonusAttributes(Bonus* bonus, std::ifstream& file){
 void World::init(const std::string& filename){
 	HUDtext_.setFont(fonts_.get("calibri"));
 	HUDtext_.setCharacterSize(20);
-	HUDtext_.setPosition(600, 0);
+	HUDtext_.setPosition(600, 550);
+	HUDtext_.setColor(sf::Color(0, 0, 0));
 	std::ifstream file(filename);
 	if (!file.good()){
 		std::cout << "could not open file: " << filename << std::endl;
@@ -166,20 +176,21 @@ void World::init(const std::string& filename){
 		if (line == SLOW_PLANE_ID_){
 			//std::unique_ptr<Plane> plane(new Plane(textures_.get("slowplane")));
 			Plane* plane = new Plane(textures_.get("slowplane"));
-			plane->setVelocity(0.f, 20.f);
-			plane->setMaxVelocity(50.f, 40.f);
-			plane->setHitboxRadius(32.f);
-			plane->setEndDestination(300.f, 200.f);
+			plane->setVelocity(15.f, 0.f);
+			plane->setMaxVelocity(15.f, 40.f);
+			plane->setHitboxRadius(27.f);
+			//plane->setEndDestination(300.f, 200.f);
+			plane->setLifetime(90.f);
 			loadPlaneAttributes(plane, file);
 		}
 		else if (line == FAST_PLANE_ID_){
 			//std::unique_ptr<Plane> plane(new Plane(textures_.get("fastplane")));
 			Plane* plane = new Plane(textures_.get("fastplane"));
-			plane->setVelocity(0.f, 40.f);
-			plane->setMaxVelocity(100.f, 100.f);
-			plane->setHitboxRadius(35.f);
-			plane->setEndDestination(200.f, 300.f);
-			plane->setLifetime(25.f);
+			plane->setVelocity(20.f, 0.f);
+			plane->setMaxVelocity(20.f, 100.f);
+			plane->setHitboxRadius(30.f);
+			//plane->setEndDestination(200.f, 300.f);
+			plane->setLifetime(65.f);
 			loadPlaneAttributes(plane,file);
 		}
 		else if (line == SUPER_FAST_PLANE_ID_){
@@ -211,6 +222,18 @@ void World::init(const std::string& filename){
 			//std::unique_ptr<Bonus> bonus(new Bonus(textures_.get("bonus")));
 			Bonus* bonus = new Bonus(textures_.get("bonus"),fonts_.get("calibri"));
 			loadBonusAttributes(bonus, file);
+		}
+		else if (line == BG_IMAGE_ID_){
+			std::getline(file, line);
+			std::smatch match;
+			if (std::regex_search(line, match, BG_FILE_)){
+				//std::string bgFile("res/levels/" + match[0]);
+				textures_.load("bg", "res/levels/" + match[0].str());
+				background_.setTexture(textures_.get("bg"), true);
+			}
+			else{
+				std::cout << "Could not load background image from: \"" << match[0] << "\" in file: \"" << filename << "\"\n";
+			}
 		}
 		else{
 			std::cout << "Error! Unrecognized entity: " << line << std::endl;
@@ -329,7 +352,7 @@ void World::update(const sf::Time& dt){
 	}
 
 	//update HUD
-	HUDtext_.setString("score: " + std::to_string(score_));
+	HUDtext_.setString("score: " + std::to_string(score_) + "\nremaining planes: " + std::to_string(planes_.size() + pendingPlanes_.size()));
 }
 
 void World::drawPlanesDestinations(sf::RenderTarget& target) const{
@@ -339,6 +362,7 @@ void World::drawPlanesDestinations(sf::RenderTarget& target) const{
 }
 
 void World::draw(sf::RenderTarget& target, sf::RenderStates states) const{
+	target.draw(background_);
 	for (const Entity* e : entities_){
 		e->draw(target, states);
 	}

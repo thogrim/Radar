@@ -7,8 +7,10 @@
 namespace GUI{
 	class Component: public sf::Drawable, public sf::Transformable{
 	protected:
+		bool active_;
 		bool hovered_;
 		bool pressed_;
+		//sf::Text text_;
 		sf::Sprite sprite_;
 		const int nSprites_;
 		sf::IntRect textureRect_;
@@ -26,7 +28,15 @@ namespace GUI{
 		virtual ~Component();
 
 		void setTexture(const sf::Texture& texture);
+		//void setText(const std::string& string, const sf::Font font, unsigned int characterSize);
+		//virtual void setText(const sf::Text& text);
+		//void setTextColor(const sf::Color& color);
+		//void setFont(const sf::Font& font);
+		//void setString(const std::string& string);
+		//void setTextPosition(float x, float y);
 		void setParentPosition(const sf::Vector2f& parentPos);
+		void setActive(bool active);
+		bool isActive() const;
 		bool hovered() const;
 		bool pressed() const;
 
